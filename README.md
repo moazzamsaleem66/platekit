@@ -19,7 +19,8 @@ core is not GCC-specific.
 
 ![Supported plate styles](art/preview.svg)
 
-Colors and layouts above are taken directly from `VehiclePlateTemplates.kt`, not a generic mockup.
+Proportions, colors and layout above are ported directly from `VehiclePlateTemplateView.kt`'s
+draw logic (including each template's real `widthDp`/`heightDp`), not a generic mockup.
 Real device screenshots/GIF from the `sample` app will supplement this once captured.
 
 ## Features
