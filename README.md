@@ -15,6 +15,12 @@ library made that logic testable on its own, and reusable in any project that ne
 similar "which country's plate is this" input — GCC-region apps in particular, but the
 core is not GCC-specific.
 
+## Preview
+
+![PlateInputView preview](art/preview.svg)
+
+> Mockup — real device screenshots/GIF from the `sample` app will replace this once captured.
+
 ## Features
 
 - **Configurable, not hardcoded.** Default country, enabled "other countries," and excluded

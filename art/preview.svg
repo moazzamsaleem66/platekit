@@ -1,0 +1,76 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>PlateInputView mockup preview</title>
+  <desc>Mockup of the PlateInputView Android widget: country selector defaulted to Qatar, other GCC country chips, category selector, a plate number input field, and a live Qatar plate preview.</desc>
+  <defs>
+    <style>
+      .bg { fill: #12141a; }
+      .card { fill: #1c1f26; stroke: #2c313c; stroke-width: 1.5; }
+      .label { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #9aa4b2; font-size: 15px; }
+      .value { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #f2f4f7; font-weight: 600; }
+      .chip { fill: #262b35; stroke: #3a4150; stroke-width: 1; }
+      .chip-selected { fill: #2f6fed; stroke: #2f6fed; }
+      .chip-text { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #d7dce3; font-size: 14px; }
+      .chip-text-selected { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #ffffff; font-size: 14px; font-weight: 600; }
+      .plate-white { fill: #ffffff; stroke: #cfd4da; stroke-width: 2; }
+      .plate-band { fill: #8a1538; }
+      .plate-text { font-family: 'Arial Black', Arial, sans-serif; fill: #111111; font-size: 42px; font-weight: 800; letter-spacing: 6px; }
+      .plate-caption { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #ffffff; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+      .title { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #f2f4f7; font-size: 22px; font-weight: 700; }
+      .subtle { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #6b7280; font-size: 13px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="900" height="520" rx="18"/>
+
+  <text x="36" y="46" class="title">Vehicle Identification</text>
+  <text x="36" y="68" class="subtle">PlateInputView — configured with PlateCountryCatalog</text>
+
+  <rect class="card" x="36" y="90" width="828" height="380" rx="14"/>
+
+  <!-- Country -->
+  <text x="66" y="132" class="label">Country</text>
+  <rect x="66" y="142" width="220" height="46" rx="10" class="chip chip-selected"/>
+  <circle cx="90" cy="165" r="10" fill="#ffffff"/>
+  <text x="112" y="171" class="chip-text-selected">Qatar (default)</text>
+
+  <text x="320" y="132" class="label">Other GCC countries</text>
+  <rect x="320" y="142" width="90" height="34" rx="8" class="chip"/>
+  <text x="335" y="164" class="chip-text">Bahrain</text>
+  <rect x="418" y="142" width="98" height="34" rx="8" class="chip"/>
+  <text x="433" y="164" class="chip-text">Saudi</text>
+  <rect x="524" y="142" width="98" height="34" rx="8" class="chip"/>
+  <text x="539" y="164" class="chip-text">Kuwait</text>
+  <rect x="630" y="142" width="80" height="34" rx="8" class="chip"/>
+  <text x="645" y="164" class="chip-text">UAE</text>
+  <rect x="718" y="142" width="86" height="34" rx="8" class="chip"/>
+  <text x="733" y="164" class="chip-text">Oman</text>
+
+  <!-- Category -->
+  <text x="66" y="216" class="label">Category</text>
+  <rect x="66" y="226" width="130" height="40" rx="8" class="chip chip-selected"/>
+  <text x="92" y="251" class="chip-text-selected">Private</text>
+  <rect x="204" y="226" width="110" height="40" rx="8" class="chip"/>
+  <text x="228" y="251" class="chip-text">Taxi</text>
+  <rect x="322" y="226" width="150" height="40" rx="8" class="chip"/>
+  <text x="340" y="251" class="chip-text">Diplomatic</text>
+  <rect x="480" y="226" width="150" height="40" rx="8" class="chip"/>
+  <text x="500" y="251" class="chip-text">Government</text>
+
+  <!-- Plate number input -->
+  <text x="66" y="304" class="label">Plate number</text>
+  <rect x="66" y="314" width="330" height="66" rx="10" fill="#12141a" stroke="#3a4150" stroke-width="1.5"/>
+  <text x="86" y="356" class="value" style="font-size:24px; letter-spacing:3px;">1 2 3 4 5</text>
+
+  <!-- Live preview -->
+  <text x="430" y="304" class="label">Live preview</text>
+  <g transform="translate(430,314)">
+    <rect class="plate-white" width="362" height="66" rx="8"/>
+    <rect class="plate-band" x="4" y="4" width="90" height="58" rx="4"/>
+    <text x="16" y="26" class="plate-caption">QATAR</text>
+    <text x="16" y="42" class="plate-caption" style="font-size:12px;">قطر</text>
+    <text x="130" y="49" class="plate-text">12345</text>
+  </g>
+
+  <!-- Footer note, well clear of the card -->
+  <text x="36" y="498" class="subtle">Default + enabled countries, category rules and colors are all set through one builder — no UI code branches on country.</text>
+</svg>
