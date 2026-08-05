@@ -17,9 +17,10 @@ core is not GCC-specific.
 
 ## Preview
 
-![PlateInputView preview](art/preview.svg)
+![Supported plate styles](art/preview.svg)
 
-> Mockup — real device screenshots/GIF from the `sample` app will replace this once captured.
+Colors and layouts above are taken directly from `VehiclePlateTemplates.kt`, not a generic mockup.
+Real device screenshots/GIF from the `sample` app will supplement this once captured.
 
 ## Features
 

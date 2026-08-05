@@ -1,76 +1,122 @@
-<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>PlateInputView mockup preview</title>
-  <desc>Mockup of the PlateInputView Android widget: country selector defaulted to Qatar, other GCC country chips, category selector, a plate number input field, and a live Qatar plate preview.</desc>
+<svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Supported plate styles, matching VehiclePlateTemplates.kt</title>
+  <desc>Eight plate mockups reproducing the real colors and layouts defined in platekit-core: Qatar private, Qatar taxi, Qatar police, Kuwait, Bahrain, Saudi Arabia, Oman, and UAE Dubai.</desc>
   <defs>
     <style>
+      text { font-family: -apple-system, Helvetica, Arial, sans-serif; }
       .bg { fill: #12141a; }
-      .card { fill: #1c1f26; stroke: #2c313c; stroke-width: 1.5; }
-      .label { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #9aa4b2; font-size: 15px; }
-      .value { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #f2f4f7; font-weight: 600; }
-      .chip { fill: #262b35; stroke: #3a4150; stroke-width: 1; }
-      .chip-selected { fill: #2f6fed; stroke: #2f6fed; }
-      .chip-text { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #d7dce3; font-size: 14px; }
-      .chip-text-selected { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #ffffff; font-size: 14px; font-weight: 600; }
-      .plate-white { fill: #ffffff; stroke: #cfd4da; stroke-width: 2; }
-      .plate-band { fill: #8a1538; }
-      .plate-text { font-family: 'Arial Black', Arial, sans-serif; fill: #111111; font-size: 42px; font-weight: 800; letter-spacing: 6px; }
-      .plate-caption { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #ffffff; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
-      .title { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #f2f4f7; font-size: 22px; font-weight: 700; }
-      .subtle { font-family: -apple-system, Helvetica, Arial, sans-serif; fill: #6b7280; font-size: 13px; }
+      .title { fill: #f2f4f7; font-size: 22px; font-weight: 700; }
+      .subtitle { fill: #6b7280; font-size: 13px; }
+      .cap { fill: #9aa4b2; font-size: 13px; text-anchor: middle; }
+      .foot { fill: #6b7280; font-size: 12.5px; }
     </style>
   </defs>
 
-  <rect class="bg" width="900" height="520" rx="18"/>
+  <rect class="bg" width="1000" height="560" rx="18"/>
+  <text x="40" y="46" class="title">Supported plate styles</text>
+  <text x="40" y="68" class="subtitle">Real colors &amp; layouts pulled from VehiclePlateTemplates.kt — not a generic mockup UI</text>
 
-  <text x="36" y="46" class="title">Vehicle Identification</text>
-  <text x="36" y="68" class="subtle">PlateInputView — configured with PlateCountryCatalog</text>
-
-  <rect class="card" x="36" y="90" width="828" height="380" rx="14"/>
-
-  <!-- Country -->
-  <text x="66" y="132" class="label">Country</text>
-  <rect x="66" y="142" width="220" height="46" rx="10" class="chip chip-selected"/>
-  <circle cx="90" cy="165" r="10" fill="#ffffff"/>
-  <text x="112" y="171" class="chip-text-selected">Qatar (default)</text>
-
-  <text x="320" y="132" class="label">Other GCC countries</text>
-  <rect x="320" y="142" width="90" height="34" rx="8" class="chip"/>
-  <text x="335" y="164" class="chip-text">Bahrain</text>
-  <rect x="418" y="142" width="98" height="34" rx="8" class="chip"/>
-  <text x="433" y="164" class="chip-text">Saudi</text>
-  <rect x="524" y="142" width="98" height="34" rx="8" class="chip"/>
-  <text x="539" y="164" class="chip-text">Kuwait</text>
-  <rect x="630" y="142" width="80" height="34" rx="8" class="chip"/>
-  <text x="645" y="164" class="chip-text">UAE</text>
-  <rect x="718" y="142" width="86" height="34" rx="8" class="chip"/>
-  <text x="733" y="164" class="chip-text">Oman</text>
-
-  <!-- Category -->
-  <text x="66" y="216" class="label">Category</text>
-  <rect x="66" y="226" width="130" height="40" rx="8" class="chip chip-selected"/>
-  <text x="92" y="251" class="chip-text-selected">Private</text>
-  <rect x="204" y="226" width="110" height="40" rx="8" class="chip"/>
-  <text x="228" y="251" class="chip-text">Taxi</text>
-  <rect x="322" y="226" width="150" height="40" rx="8" class="chip"/>
-  <text x="340" y="251" class="chip-text">Diplomatic</text>
-  <rect x="480" y="226" width="150" height="40" rx="8" class="chip"/>
-  <text x="500" y="251" class="chip-text">Government</text>
-
-  <!-- Plate number input -->
-  <text x="66" y="304" class="label">Plate number</text>
-  <rect x="66" y="314" width="330" height="66" rx="10" fill="#12141a" stroke="#3a4150" stroke-width="1.5"/>
-  <text x="86" y="356" class="value" style="font-size:24px; letter-spacing:3px;">1 2 3 4 5</text>
-
-  <!-- Live preview -->
-  <text x="430" y="304" class="label">Live preview</text>
-  <g transform="translate(430,314)">
-    <rect class="plate-white" width="362" height="66" rx="8"/>
-    <rect class="plate-band" x="4" y="4" width="90" height="58" rx="4"/>
-    <text x="16" y="26" class="plate-caption">QATAR</text>
-    <text x="16" y="42" class="plate-caption" style="font-size:12px;">قطر</text>
-    <text x="130" y="49" class="plate-text">12345</text>
+  <!-- Row 1 -->
+  <!-- Qatar Private -->
+  <g transform="translate(40,110)">
+    <rect width="215" height="100" rx="6" fill="#E7E8E6" stroke="#9A9A9A" stroke-width="3"/>
+    <path d="M0,0 L40,0 L40,8 L34,14 L40,20 L34,26 L40,32 L34,38 L40,44 L34,50 L40,56 L34,62 L40,68 L34,74 L40,80 L34,86 L40,92 L40,100 L0,100 Z" fill="#750014"/>
+    <text x="20" y="30" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Q</text>
+    <text x="20" y="42" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">A</text>
+    <text x="20" y="54" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">T</text>
+    <text x="20" y="66" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">A</text>
+    <text x="20" y="78" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">R</text>
+    <text x="132" y="28" fill="#111" font-size="12" text-anchor="middle">قطر</text>
+    <text x="132" y="74" fill="#111" font-size="24" font-weight="800" text-anchor="middle" letter-spacing="1">12345</text>
   </g>
+  <text x="147" y="234" class="cap">Qatar — Private</text>
 
-  <!-- Footer note, well clear of the card -->
-  <text x="36" y="498" class="subtle">Default + enabled countries, category rules and colors are all set through one builder — no UI code branches on country.</text>
+  <!-- Qatar Taxi -->
+  <g transform="translate(275,110)">
+    <rect width="215" height="100" rx="6" fill="#B8BCC5" stroke="#9A9A9A" stroke-width="3"/>
+    <line x1="73" y1="0" x2="73" y2="100" stroke="#111" stroke-width="1.5"/>
+    <line x1="0" y1="50" x2="73" y2="50" stroke="#111" stroke-width="1.5"/>
+    <text x="36" y="30" fill="#111" font-size="11" text-anchor="middle">أجرة</text>
+    <text x="36" y="75" fill="#111" font-size="12" font-weight="700" text-anchor="middle">TAXI</text>
+    <text x="145" y="28" fill="#111" font-size="12" text-anchor="middle">قطر</text>
+    <text x="145" y="74" fill="#111" font-size="22" font-weight="800" text-anchor="middle">12345</text>
+  </g>
+  <text x="382" y="234" class="cap">Qatar — Taxi</text>
+
+  <!-- Qatar Police -->
+  <g transform="translate(510,110)">
+    <rect width="215" height="100" rx="6" fill="#168BC4" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="107" y="40" fill="#fff" font-size="20" font-weight="800" text-anchor="middle">12345</text>
+    <line x1="0" y1="58" x2="215" y2="58" stroke="#fff" stroke-width="1.5"/>
+    <line x1="107" y1="58" x2="107" y2="100" stroke="#fff" stroke-width="1.5"/>
+    <text x="54" y="83" fill="#fff" font-size="13" text-anchor="middle">قطر</text>
+    <text x="161" y="83" fill="#fff" font-size="13" text-anchor="middle">شرطة</text>
+  </g>
+  <text x="617" y="234" class="cap">Qatar — Police</text>
+
+  <!-- Kuwait -->
+  <g transform="translate(745,110)">
+    <rect width="215" height="100" rx="6" fill="#ffffff" stroke="#111" stroke-width="2"/>
+    <line x1="39" y1="0" x2="39" y2="100" stroke="#111" stroke-width="1.5"/>
+    <text x="19" y="30" fill="#111" font-size="8" font-weight="700" text-anchor="middle">K</text>
+    <text x="19" y="42" fill="#111" font-size="8" font-weight="700" text-anchor="middle">U</text>
+    <text x="19" y="54" fill="#111" font-size="8" font-weight="700" text-anchor="middle">W</text>
+    <text x="19" y="66" fill="#111" font-size="8" font-weight="700" text-anchor="middle">A</text>
+    <text x="19" y="78" fill="#111" font-size="8" font-weight="700" text-anchor="middle">I</text>
+    <text x="19" y="90" fill="#111" font-size="8" font-weight="700" text-anchor="middle">T</text>
+    <text x="150" y="26" fill="#111" font-size="10" text-anchor="middle">دولة الكويت</text>
+    <text x="140" y="75" fill="#111" font-size="18" font-weight="800" text-anchor="middle">12345</text>
+  </g>
+  <text x="852" y="234" class="cap">Kuwait</text>
+
+  <!-- Row 2 -->
+  <!-- Bahrain -->
+  <g transform="translate(40,340)">
+    <rect width="215" height="100" rx="6" fill="#ffffff" stroke="#153B9E" stroke-width="2"/>
+    <text x="55" y="30" fill="#153B9E" font-size="12" font-weight="700" text-anchor="middle">BAHRAIN</text>
+    <rect x="95" y="8" width="20" height="20" fill="#C8102E"/>
+    <text x="165" y="30" fill="#153B9E" font-size="12" font-weight="700" text-anchor="middle">البحرين</text>
+    <text x="107" y="76" fill="#153B9E" font-size="22" font-weight="800" text-anchor="middle">12345</text>
+  </g>
+  <text x="147" y="464" class="cap">Bahrain</text>
+
+  <!-- Saudi Arabia -->
+  <g transform="translate(275,340)">
+    <rect width="215" height="100" rx="6" fill="#ffffff" stroke="#111" stroke-width="2"/>
+    <line x1="185" y1="0" x2="185" y2="100" stroke="#111" stroke-width="1.5"/>
+    <line x1="118" y1="0" x2="118" y2="100" stroke="#111" stroke-width="1.5"/>
+    <line x1="0" y1="50" x2="185" y2="50" stroke="#111" stroke-width="1.5"/>
+    <text x="59" y="28" fill="#111" font-size="11" text-anchor="middle">١٢٣٤</text>
+    <text x="151" y="28" fill="#111" font-size="11" text-anchor="middle">ح ط ص</text>
+    <text x="59" y="76" fill="#111" font-size="14" font-weight="800" text-anchor="middle">1 2 3 4</text>
+    <text x="151" y="76" fill="#111" font-size="13" font-weight="800" text-anchor="middle">T X J</text>
+    <circle cx="200" cy="22" r="7" fill="none" stroke="#111" stroke-width="1"/>
+    <text x="200" y="60" fill="#111" font-size="9" font-weight="700" text-anchor="middle">KSA</text>
+  </g>
+  <text x="382" y="464" class="cap">Saudi Arabia</text>
+
+  <!-- Oman -->
+  <g transform="translate(510,340)">
+    <rect width="215" height="100" rx="6" fill="#FFD500" stroke="#111" stroke-width="2"/>
+    <line x1="86" y1="0" x2="86" y2="100" stroke="#111" stroke-width="1.5"/>
+    <line x1="142" y1="0" x2="142" y2="100" stroke="#111" stroke-width="1.5"/>
+    <text x="43" y="58" fill="#111" font-size="16" font-weight="800" text-anchor="middle">1234</text>
+    <text x="114" y="58" fill="#111" font-size="13" text-anchor="middle">A</text>
+    <circle cx="158" cy="55" r="10" fill="none" stroke="#808080" stroke-width="1.5"/>
+    <text x="188" y="60" fill="#111" font-size="11" text-anchor="middle">عُمان</text>
+  </g>
+  <text x="617" y="464" class="cap">Oman</text>
+
+  <!-- UAE Dubai -->
+  <g transform="translate(745,340)">
+    <rect width="215" height="100" rx="6" fill="#ffffff" stroke="#111" stroke-width="2"/>
+    <text x="45" y="28" fill="#111" font-size="12" font-weight="700" text-anchor="middle">DUBAI</text>
+    <rect x="165" y="16" width="26" height="18" fill="none" stroke="#111" stroke-width="1.5"/>
+    <text x="178" y="29" fill="#111" font-size="10" font-weight="700" text-anchor="middle">A</text>
+    <text x="107" y="76" fill="#111" font-size="20" font-weight="800" text-anchor="middle">12345</text>
+  </g>
+  <text x="852" y="464" class="cap">UAE — Dubai</text>
+
+  <text x="40" y="510" class="foot">Ships today: Qatar (private / taxi / police / ISF / diplomatic / government), Bahrain, Kuwait, Saudi, Oman, UAE (Dubai / Abu Dhabi / other emirates).</text>
+  <text x="40" y="530" class="foot">Add a country by defining one VehiclePlateTemplate — no changes needed elsewhere in the library.</text>
 </svg>
