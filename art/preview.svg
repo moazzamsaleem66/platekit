@@ -9,6 +9,8 @@
       .subtitle { fill: #6b7280; font-size: 13px; }
       .cap { fill: #9aa4b2; font-size: 13px; text-anchor: middle; }
       .foot { fill: #6b7280; font-size: 12.5px; }
+      .spot rect { fill: none; stroke: #2f6fed; stroke-width: 5; }
+      .spot text { fill: #2f6fed; font-size: 13px; font-weight: 700; text-anchor: middle; }
     </style>
   </defs>
 
@@ -119,4 +121,38 @@
 
   <text x="40" y="510" class="foot">Ships today: Qatar (private / taxi / police / ISF / diplomatic / government), Bahrain, Kuwait, Saudi, Oman, UAE (Dubai / Abu Dhabi / other emirates).</text>
   <text x="40" y="530" class="foot">Add a country by defining one VehiclePlateTemplate — no changes needed elsewhere in the library.</text>
+
+  <!-- Rotating highlight, cycles through each style every second, loops forever (SMIL animation) -->
+  <g class="spot" opacity="0">
+    <rect x="34" y="104" width="227" height="112" rx="10"/><text x="147" y="94">Qatar — Private</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+  </g>
+  <g class="spot" opacity="0">
+    <rect x="269" y="104" width="227" height="112" rx="10"/><text x="382" y="94">Qatar — Taxi</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="1s" repeatCount="indefinite"/>
+  </g>
+  <g class="spot" opacity="0">
+    <rect x="504" y="104" width="227" height="112" rx="10"/><text x="617" y="94">Qatar — Police</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+  </g>
+  <g class="spot" opacity="0">
+    <rect x="739" y="104" width="227" height="112" rx="10"/><text x="852" y="94">Kuwait</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="3s" repeatCount="indefinite"/>
+  </g>
+  <g class="spot" opacity="0">
+    <rect x="34" y="334" width="227" height="112" rx="10"/><text x="147" y="324">Bahrain</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="4s" repeatCount="indefinite"/>
+  </g>
+  <g class="spot" opacity="0">
+    <rect x="269" y="334" width="227" height="112" rx="10"/><text x="382" y="324">Saudi Arabia</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="5s" repeatCount="indefinite"/>
+  </g>
+  <g class="spot" opacity="0">
+    <rect x="504" y="334" width="227" height="112" rx="10"/><text x="617" y="324">Oman</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="6s" repeatCount="indefinite"/>
+  </g>
+  <g class="spot" opacity="0">
+    <rect x="739" y="334" width="227" height="112" rx="10"/><text x="852" y="324">UAE — Dubai</text>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.13;0.16;1" dur="8s" begin="7s" repeatCount="indefinite"/>
+  </g>
 </svg>
