@@ -19,25 +19,24 @@ core is not GCC-specific.
 
 The library provides high-fidelity, dimension-accurate renderings for vehicle plates across the GCC region.
 
-![Supported plate styles](art/preview.svg)
+![Animated Plate Gallery](art/preview.svg)
 
-### 🇰🇼 Kuwait Styles
-- **Private:** Standard, Long (European), and Small formats.
-- **Transport:** Public, Buses, Taxis, and Goods Exportation.
-- **Specialty:** Police, Government, Army, National Guard, Firefighting.
-- **Exclusive:** Emiri Bureau, Emiri Guard, Diplomatic (with red C.D band).
-- **Motorcycle:** Unique square layout with category numbers.
+### 🇰🇼 Kuwait Styles (Full Collection)
+- **Standard & Long:** Standard (33x15), European Long (52x11), and Small formats.
+- **Transport & Public:** Public (90), Public Transport (91), Buses (92), Taxis (93), Goods Exportation (95).
+- **Security & Specialty:** Police, National Guard, Firefighting, Army, Construction, Export.
+- **Diplomatic & Emiri:** Emiri Bureau, Emiri Guard, Diplomatic (with unique red band).
+- **Motorcycles:** Square formats for both Private and Police bikes.
 
 ### 🇶🇦 Qatar Styles
-- **Private:** Classic maroon national strip with serrated edge.
-- **Specialty:** Taxi, Police, ISF, Diplomatic, Government.
-- **Dynamic:** Sub-styles render automatically based on vehicle type strings.
+- **Comprehensive:** Private, Taxi, Police, ISF, Diplomatic, Government.
+- **Dynamic Rendering:** National maroon strip with serrated edge and sub-style specific badges.
 
 ### 🇸🇦 Saudi Arabia, 🇧🇭 Bahrain, 🇴🇲 Oman, 🇦🇪 UAE
-- **Saudi Arabia:** Accurate Palm & Crossed Swords emblem with bilingual grid.
-- **Bahrain:** Accurate serrated flag detail.
+- **Saudi Arabia:** Accurate Palm & Crossed Swords with bilingual 2x2 grid.
+- **Bahrain:** High-detail serrated national flag.
 - **Oman:** Wide format with national seal.
-- **UAE:** Specific emirate layouts (Dubai, Abu Dhabi, etc.).
+- **UAE:** Region-specific emirate layouts (Dubai, Abu Dhabi, and more).
 
 ## Features
 

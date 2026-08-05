@@ -1,24 +1,25 @@
-<svg viewBox="0 0 1600 1200" xmlns="http://www.w3.org/2000/svg" role="img">
-<title>PlateKit — Supported Plate Styles</title>
+<svg viewBox="0 0 1600 1600" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>PlateKit — Exhaustive GCC Plate Gallery</title>
 <defs>
     <style>
         text { font-family: -apple-system, Helvetica, Arial, sans-serif; }
         .bgc { fill: #12141a; }
         .ttl { fill: #f2f4f7; font-size: 32px; font-weight: 700; }
         .sec-ttl { fill: #9aa4b2; font-size: 24px; font-weight: 600; }
-        .cap { fill: #6b7280; font-size: 16px; text-anchor: middle; }
+        .cap { fill: #6b7280; font-size: 14px; text-anchor: middle; }
+        .highlight { fill: none; stroke: #2f6fed; stroke-width: 4; stroke-dasharray: 10 5; }
     </style>
 </defs>
-<rect class="bgc" width="1600" height="1200" rx="24"/>
+<rect class="bgc" width="1600" height="1600" rx="24"/>
 
 <!-- Header -->
-<text x="60" y="70" class="ttl">PlateKit — Vehicle Plate Templates</text>
+<text x="60" y="70" class="ttl">PlateKit — High Fidelity Plate Gallery</text>
 
 <!-- QATAR SECTION -->
-<text x="60" y="140" class="sec-ttl">Qatar</text>
+<text x="60" y="140" class="sec-ttl">Qatar — Sub-style Collection</text>
 
 <!-- Qatar Private -->
-<g transform="translate(60, 180) scale(1.2)">
+<g transform="translate(60, 180)">
     <rect width="320" height="154" rx="10" fill="#E7E8E6" stroke="#9A9A9A" stroke-width="4"/>
     <path d="M0,0 L57,0 L43,8.5 L57,17 L43,25.5 L57,34 L43,42.5 L57,51 L43,59.5 L57,68 L43,76.5 L57,85 L43,93.5 L57,102 L43,110.5 L57,119 L43,127.5 L57,136 L43,144.5 L57,154 L0,154 Z" fill="#750014"/>
     <text x="21" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">Q</text>
@@ -27,13 +28,16 @@
     <text x="21" y="111" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">A</text>
     <text x="21" y="136" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">R</text>
     <text x="188" y="38" text-anchor="middle" font-size="26" fill="#111">قطر</text>
-    <text x="188" y="106" text-anchor="middle" font-size="52" font-weight="800" fill="#111">12345</text>
+    <text x="188" y="106" text-anchor="middle" font-size="52" font-weight="800" fill="#111">
+        12345
+        <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite" />
+    </text>
     <rect width="320" height="154" rx="10" fill="none" stroke="#111" stroke-width="2"/>
 </g>
-<text x="252" y="390" class="cap">Private</text>
+<text x="220" y="360" class="cap">Private (Dynamic Typing)</text>
 
 <!-- Qatar Taxi -->
-<g transform="translate(480, 180) scale(1.2)">
+<g transform="translate(420, 180)">
     <rect width="238" height="92" rx="10" fill="#B8BCC5" stroke="#9A9A9A" stroke-width="4"/>
     <line x1="81" y1="0" x2="81" y2="92" stroke="#111" stroke-width="2"/>
     <line x1="0" y1="46" x2="81" y2="46" stroke="#111" stroke-width="2"/>
@@ -43,10 +47,10 @@
     <text x="160" y="68" text-anchor="middle" font-size="34" font-weight="800" fill="#111">12345</text>
     <rect width="238" height="92" rx="10" fill="none" stroke="#111" stroke-width="2"/>
 </g>
-<text x="622" y="310" class="cap">Taxi</text>
+<text x="539" y="300" class="cap">Taxi</text>
 
 <!-- Qatar Police -->
-<g transform="translate(800, 180) scale(1.2)">
+<g transform="translate(700, 180)">
     <rect width="238" height="92" rx="10" fill="#168BC4" stroke="#fff" stroke-width="2"/>
     <text x="119" y="38" text-anchor="middle" font-size="36" font-weight="800" fill="#fff">12345</text>
     <line x1="0" y1="54" x2="238" y2="54" stroke="#fff" stroke-width="2"/>
@@ -54,13 +58,24 @@
     <text x="60" y="76" text-anchor="middle" font-size="16" fill="#fff">قطر</text>
     <text x="178" y="76" text-anchor="middle" font-size="16" fill="#fff">شرطة</text>
 </g>
-<text x="942" y="310" class="cap">Police</text>
+<text x="819" y="300" class="cap">Police</text>
 
-<!-- KUWAIT SECTION -->
-<text x="60" y="460" class="sec-ttl">Kuwait</text>
+<!-- Qatar ISF -->
+<g transform="translate(980, 180)">
+    <rect width="238" height="92" rx="10" fill="#E7AA18" stroke="#6C3A12" stroke-width="2"/>
+    <text x="119" y="38" text-anchor="middle" font-size="34" font-weight="800" fill="#6C3A12">12345</text>
+    <line x1="0" y1="46" x2="238" y2="46" stroke="#6C3A12" stroke-width="2"/>
+    <text x="119" y="68" text-anchor="middle" font-size="18" fill="#6C3A12">لخويا</text>
+    <text x="119" y="86" text-anchor="middle" font-size="16" font-weight="700" fill="#6C3A12">ISF</text>
+</g>
+<text x="1099" y="300" class="cap">ISF</text>
+
+
+<!-- KUWAIT SECTION 1 -->
+<text x="60" y="440" class="sec-ttl">Kuwait — Standard &amp; Transport</text>
 
 <!-- Kuwait Standard -->
-<g transform="translate(60, 500) scale(1.2)">
+<g transform="translate(60, 480)">
     <rect width="220" height="105" rx="10" fill="#fff" stroke="#111" stroke-width="2"/>
     <line x1="40" y1="0" x2="40" y2="105" stroke="#111" stroke-width="2"/>
     <text x="20" y="25" text-anchor="middle" font-size="12" font-weight="700" fill="#111">K</text>
@@ -73,10 +88,10 @@
     <text x="160" y="24" text-anchor="middle" font-size="14" fill="#111">دولة الكويت</text>
     <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#111">123456</text>
 </g>
-<text x="192" y="650" class="cap">Standard Private</text>
+<text x="170" y="610" class="cap">Standard Private</text>
 
 <!-- Kuwait Long -->
-<g transform="translate(380, 500) scale(1.1)">
+<g transform="translate(320, 480)">
     <rect width="400" height="84" rx="10" fill="#fff" stroke="#111" stroke-width="2"/>
     <line x1="96" y1="0" x2="96" y2="84" stroke="#111" stroke-width="2"/>
     <line x1="0" y1="34" x2="96" y2="34" stroke="#111" stroke-width="2"/>
@@ -84,10 +99,10 @@
     <text x="48" y="66" text-anchor="middle" font-size="16" font-weight="700" fill="#111">KUWAIT</text>
     <text x="248" y="52" text-anchor="middle" font-size="44" font-weight="800" fill="#111">10-123456</text>
 </g>
-<text x="600" y="620" class="cap">Long Format</text>
+<text x="520" y="590" class="cap">European Long</text>
 
 <!-- Kuwait Public -->
-<g transform="translate(860, 500) scale(1.2)">
+<g transform="translate(760, 480)">
     <rect width="220" height="105" rx="10" fill="#FFD500" stroke="#111" stroke-width="2"/>
     <line x1="40" y1="0" x2="40" y2="105" stroke="#111" stroke-width="2"/>
     <text x="20" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#111">KUWAIT</text>
@@ -95,30 +110,95 @@
     <text x="160" y="24" text-anchor="middle" font-size="14" fill="#111">دولة الكويت</text>
     <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#111">123456</text>
 </g>
-<text x="992" y="650" class="cap">Public (Bus/Taxi)</text>
+<text x="870" y="610" class="cap">Public (90)</text>
 
-<!-- Kuwait Specialty -->
-<g transform="translate(60, 700) scale(1.2)">
+<!-- Kuwait Taxi -->
+<g transform="translate(1020, 480)">
+    <rect width="220" height="105" rx="10" fill="#FFD500" stroke="#111" stroke-width="2"/>
+    <line x1="40" y1="0" x2="40" y2="105" stroke="#111" stroke-width="2"/>
+    <text x="20" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#111">KUWAIT</text>
+    <text x="70" y="24" text-anchor="middle" font-size="16" fill="#111">93</text>
+    <text x="160" y="24" text-anchor="middle" font-size="14" fill="#111">دولة الكويت</text>
+    <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#111">123456</text>
+</g>
+<text x="1130" y="610" class="cap">Public Taxi (93)</text>
+
+
+<!-- KUWAIT SECTION 2 -->
+<text x="60" y="720" class="sec-ttl">Kuwait — Specialty &amp; Security</text>
+
+<!-- Kuwait Commercial -->
+<g transform="translate(60, 760)">
+    <rect width="220" height="105" rx="10" fill="#F06292" stroke="#111" stroke-width="2"/>
+    <line x1="40" y1="0" x2="40" y2="105" stroke="#111" stroke-width="2"/>
+    <text x="20" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#111">KUWAIT</text>
+    <text x="130" y="24" text-anchor="middle" font-size="14" fill="#111">دولة الكويت-تجاري</text>
+    <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#111">123456</text>
+</g>
+<text x="170" y="890" class="cap">Commercial</text>
+
+<!-- Kuwait Construction -->
+<g transform="translate(320, 760)">
+    <rect width="220" height="105" rx="10" fill="#FF9800" stroke="#111" stroke-width="2"/>
+    <line x1="40" y1="0" x2="40" y2="105" stroke="#111" stroke-width="2"/>
+    <text x="20" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#111">KUWAIT</text>
+    <text x="130" y="24" text-anchor="middle" font-size="14" fill="#111">دولة الكويت-إنشاءات</text>
+    <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#111">123456</text>
+</g>
+<text x="430" y="890" class="cap">Construction</text>
+
+<!-- Kuwait Export -->
+<g transform="translate(580, 760)">
+    <rect width="220" height="105" rx="10" fill="#006633" stroke="#fff" stroke-width="2"/>
+    <line x1="40" y1="0" x2="40" y2="105" stroke="#fff" stroke-width="2"/>
+    <text x="20" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">KUWAIT</text>
+    <text x="130" y="24" text-anchor="middle" font-size="14" fill="#fff">دولة الكويت - تصدير</text>
+    <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#fff">123456</text>
+</g>
+<text x="690" y="890" class="cap">Export</text>
+
+<!-- Kuwait Fire -->
+<g transform="translate(840, 760)">
     <rect width="220" height="105" rx="10" fill="#FF0000" stroke="#111" stroke-width="2"/>
     <line x1="40" y1="0" x2="40" y2="105" stroke="#111" stroke-width="2"/>
     <text x="130" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#111">FIRE - الإطفاء العام</text>
     <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#111">1327</text>
 </g>
-<text x="192" y="850" class="cap">Firefighting</text>
+<text x="950" y="890" class="cap">Firefighting</text>
 
-<!-- Kuwait Motorcycle -->
-<g transform="translate(380, 700) scale(1.2)">
-    <rect width="160" height="160" rx="10" fill="#fff" stroke="#111" stroke-width="2"/>
-    <line x1="35" y1="0" x2="35" y2="160" stroke="#111" stroke-width="2"/>
-    <text x="100" y="30" text-anchor="middle" font-size="16" fill="#111">دولة الكويت</text>
-    <text x="100" y="85" text-anchor="middle" font-size="42" font-weight="800" fill="#111">1023</text>
-    <text x="60" y="140" text-anchor="middle" font-size="18" fill="#111">4</text>
-    <text x="120" y="140" text-anchor="middle" font-size="18" fill="#111">دراجة</text>
+<!-- Kuwait Police -->
+<g transform="translate(1100, 760)">
+    <rect width="220" height="105" rx="10" fill="#111" stroke="#fff" stroke-width="2"/>
+    <line x1="40" y1="0" x2="40" y2="105" stroke="#fff" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">POLICE شرطة</text>
+    <text x="130" y="75" text-anchor="middle" font-size="36" font-weight="800" fill="#fff">123456</text>
 </g>
-<text x="476" y="920" class="cap">Motorcycle</text>
+<text x="1210" y="890" class="cap">Police</text>
+
+
+<!-- KUWAIT SECTION 3 -->
+<text x="60" y="1000" class="sec-ttl">Kuwait — Exclusive &amp; Motorcycles</text>
+
+<!-- Kuwait National Guard -->
+<g transform="translate(60, 1040)">
+    <rect width="220" height="105" rx="10" fill="#006633" stroke="#FFD500" stroke-width="3"/>
+    <line x1="40" y1="0" x2="40" y2="105" stroke="#FFD500" stroke-width="2"/>
+    <text x="130" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#FFD500">الحرس الوطني</text>
+    <text x="130" y="80" text-anchor="middle" font-size="40" font-weight="800" fill="#FFD500">00000</text>
+</g>
+<text x="170" y="1170" class="cap">National Guard</text>
+
+<!-- Kuwait Emiri Bureau -->
+<g transform="translate(320, 1040)">
+    <rect width="220" height="105" rx="10" fill="#0033AA" stroke="#fff" stroke-width="2"/>
+    <line x1="40" y1="0" x2="40" y2="105" stroke="#fff" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-size="12" fill="#fff">دولة الكويت - الديوان الأميري</text>
+    <text x="130" y="75" text-anchor="middle" font-size="38" font-weight="800" fill="#fff">00000</text>
+</g>
+<text x="430" y="1170" class="cap">Emiri Bureau</text>
 
 <!-- Kuwait Diplomatic -->
-<g transform="translate(620, 700) scale(1.2)">
+<g transform="translate(580, 1040)">
     <rect width="220" height="105" rx="10" fill="#fff" stroke="#111" stroke-width="2"/>
     <line x1="40" y1="0" x2="40" y2="105" stroke="#111" stroke-width="2"/>
     <text x="130" y="24" text-anchor="middle" font-size="14" fill="#0033AA">هيئة دبلوماسية</text>
@@ -126,13 +206,35 @@
     <rect x="40" y="78" width="180" height="27" fill="#FF0000"/>
     <text x="130" y="98" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">C.D</text>
 </g>
-<text x="752" y="850" class="cap">Diplomatic</text>
+<text x="690" y="1170" class="cap">Diplomatic</text>
+
+<!-- Kuwait Motorcycle -->
+<g transform="translate(840, 1040)">
+    <rect width="140" height="140" rx="10" fill="#fff" stroke="#111" stroke-width="2"/>
+    <line x1="30" y1="0" x2="30" y2="140" stroke="#111" stroke-width="2"/>
+    <text x="85" y="25" text-anchor="middle" font-size="14" fill="#111">دولة الكويت</text>
+    <text x="85" y="75" text-anchor="middle" font-size="38" font-weight="800" fill="#111">1023</text>
+    <text x="50" y="125" text-anchor="middle" font-size="16" fill="#111">4</text>
+    <text x="105" y="125" text-anchor="middle" font-size="16" fill="#111">دراجة</text>
+</g>
+<text x="910" y="1200" class="cap">Motorcycle</text>
+
+<!-- Kuwait Police Motorcycle -->
+<g transform="translate(1040, 1040)">
+    <rect width="140" height="140" rx="10" fill="#111" stroke="#fff" stroke-width="2"/>
+    <line x1="30" y1="0" x2="30" y2="140" stroke="#fff" stroke-width="2"/>
+    <text x="85" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">شرطة</text>
+    <text x="85" y="85" text-anchor="middle" font-size="38" font-weight="800" fill="#fff">0000</text>
+    <text x="85" y="125" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">POLICE</text>
+</g>
+<text x="1110" y="1200" class="cap">Police Bike</text>
+
 
 <!-- OTHER COUNTRIES SECTION -->
-<text x="60" y="980" class="sec-ttl">GCC &amp; Others</text>
+<text x="60" y="1280" class="sec-ttl">GCC Regional Standards</text>
 
 <!-- Saudi Arabia -->
-<g transform="translate(60, 1020) scale(1.0)">
+<g transform="translate(60, 1320)">
     <rect width="260" height="150" rx="10" fill="#ffffff" stroke="#111" stroke-width="2"/>
     <line x1="120" y1="0" x2="120" y2="150" stroke="#111" stroke-width="1.5"/>
     <line x1="0" y1="75" x2="225" y2="75" stroke="#111" stroke-width="1.5"/>
@@ -144,10 +246,10 @@
     <text x="242" y="50" text-anchor="middle" font-size="10" fill="#111">السعودية</text>
     <text x="242" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#111">KSA</text>
 </g>
-<text x="190" y="1190" class="cap">Saudi Arabia</text>
+<text x="190" y="1490" class="cap">Saudi Arabia</text>
 
 <!-- Bahrain -->
-<g transform="translate(380, 1020) scale(1.2)">
+<g transform="translate(380, 1320)">
     <rect width="230" height="94" rx="10" fill="#ffffff" stroke="#153B9E" stroke-width="2"/>
     <text x="45" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#153B9E">BAHRAIN</text>
     <rect x="95" y="10" width="40" height="24" fill="#ffffff" stroke="#ccc" stroke-width="0.5"/>
@@ -155,10 +257,10 @@
     <text x="185" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#153B9E">البحرين</text>
     <text x="115" y="75" text-anchor="middle" font-size="34" font-weight="800" fill="#153B9E">12345</text>
 </g>
-<text x="518" y="1150" class="cap">Bahrain</text>
+<text x="495" y="1450" class="cap">Bahrain</text>
 
 <!-- Oman -->
-<g transform="translate(720, 1020) scale(1.0)">
+<g transform="translate(680, 1320)">
     <rect width="360" height="78" rx="10" fill="#FFD500" stroke="#111" stroke-width="2"/>
     <line x1="144" y1="0" x2="144" y2="78" stroke="#111" stroke-width="1.5"/>
     <line x1="237" y1="0" x2="237" y2="78" stroke="#111" stroke-width="1.5"/>
@@ -166,15 +268,23 @@
     <text x="190" y="50" text-anchor="middle" font-size="24" fill="#111">A</text>
     <text x="298" y="50" text-anchor="middle" font-size="20" fill="#111">عُمان</text>
 </g>
-<text x="900" y="1120" class="cap">Oman</text>
+<text x="860" y="1420" class="cap">Oman</text>
 
 <!-- UAE Dubai -->
-<g transform="translate(1140, 1020) scale(1.2)">
+<g transform="translate(1100, 1320)">
     <rect width="220" height="108" rx="10" fill="#ffffff" stroke="#111" stroke-width="2"/>
     <text x="50" y="24" text-anchor="middle" font-size="18" font-weight="700" fill="#111">DUBAI</text>
     <text x="190" y="24" text-anchor="middle" font-size="20" fill="#111">A</text>
     <text x="110" y="80" text-anchor="middle" font-size="44" font-weight="800" fill="#111">12345</text>
 </g>
-<text x="1272" y="1170" class="cap">UAE — Dubai</text>
+<text x="1210" y="1450" class="cap">UAE — Dubai</text>
+
+<!-- Dynamic Highlight Animation -->
+<rect class="highlight" x="0" y="0" width="340" height="200" rx="15" opacity="0">
+    <animateTransform attributeName="transform" type="translate"
+        values="50,170; 410,170; 690,170; 970,170; 50,470; 310,470; 750,470; 1010,470; 50,750; 310,750; 570,750; 830,750; 1090,750"
+        dur="20s" repeatCount="indefinite" />
+    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="1.5s" repeatCount="indefinite" />
+</rect>
 
 </svg>
