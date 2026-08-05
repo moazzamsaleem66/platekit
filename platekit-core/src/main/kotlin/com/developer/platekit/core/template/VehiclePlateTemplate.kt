@@ -8,7 +8,7 @@ private const val ARGB_BLACK = 0xFF000000.toInt()
 private const val ARGB_TRANSPARENT = 0x00000000
 private const val ARGB_RED = 0xFFFF0000.toInt()
 
-enum class VehiclePlateLayout { QATAR, QATAR_DIPLOMATIC, QATAR_POLICE, QATAR_ISF, SAUDI, UAE_DUBAI, UAE_ABU_DHABI, UAE_EMIRATE, KUWAIT, BAHRAIN, OMAN, GENERIC }
+enum class VehiclePlateLayout { QATAR, QATAR_DIPLOMATIC, QATAR_POLICE, QATAR_ISF, SAUDI, UAE_DUBAI, UAE_ABU_DHABI, UAE_EMIRATE, KUWAIT, KUWAIT_DIPLOMATIC, KUWAIT_SQUARE, KUWAIT_LONG, KUWAIT_SMALL, BAHRAIN, OMAN, GENERIC }
 
 data class VehiclePlateTemplate(
     val layout: VehiclePlateLayout = VehiclePlateLayout.GENERIC,
@@ -47,16 +47,162 @@ object VehiclePlateTemplates {
     private const val BAHRAIN_BLUE = 0xFF153B9E.toInt()
     private const val OMAN_YELLOW = 0xFFFFD500.toInt()
     private const val UAE_RED = 0xFFC8102E.toInt()
+    private const val KUWAIT_GREEN = 0xFF006633.toInt()
+    private const val KUWAIT_BLUE = 0xFF0033AA.toInt()
+    private const val KUWAIT_PINK = 0xFFF06292.toInt()
+    private const val KUWAIT_PURPLE = 0xFF9C27B0.toInt()
+    private const val KUWAIT_ORANGE = 0xFFFF9800.toInt()
+    private const val KUWAIT_YELLOW = 0xFFFFD500.toInt()
+    private const val KUWAIT_BEIGE = 0xFFC6BC96.toInt()
+    private const val KUWAIT_GOV_BLUE = 0xFF5897D0.toInt()
 
     fun resolve(countryCode: String, region: String = "", vehicleTypeCode: String = "", vehicleTypeName: String = ""): VehiclePlateTemplate {
         return when (countryCode.uppercase()) {
             "QAT" -> qatar(vehicleTypeCode, vehicleTypeName)
             "BHR" -> VehiclePlateTemplate(VehiclePlateLayout.BAHRAIN, textColor = BAHRAIN_BLUE, badgeTextColor = BAHRAIN_BLUE, badgeTop = "BAHRAIN  البحرين", numberMaxLength = 6, widthDp = 230, heightDp = 94)
-            "KWT" -> VehiclePlateTemplate(VehiclePlateLayout.KUWAIT, badgeTop = "K", badgeBottom = "KUWAIT", showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105)
+            "KWT" -> kuwait(vehicleTypeCode, vehicleTypeName)
             "OMN" -> VehiclePlateTemplate(VehiclePlateLayout.OMAN, backgroundColor = OMAN_YELLOW, badgeColor = OMAN_YELLOW, badgeTop = "عُمان", badgeBottom = "OMAN", showCategory = true, numberMaxLength = 4, widthDp = 360, heightDp = 78)
             "SAU", "KSA" -> VehiclePlateTemplate(VehiclePlateLayout.SAUDI, badgeTop = "السعودية", badgeBottom = "KSA", showCategory = true, numberMaxLength = 4, widthDp = 260, heightDp = 150)
             "UAE" -> uae(region)
             else -> VehiclePlateTemplate(VehiclePlateLayout.GENERIC, badgeTop = countryCode.uppercase(), badgeBottom = region, showCategory = true)
+        }
+    }
+
+    private fun kuwait(code: String, name: String): VehiclePlateTemplate {
+        val key = "$code $name".uppercase()
+        return when {
+            key.contains("PRIVATE (LONG)") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT_LONG, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK,
+                badgeTop = "KUWAIT", headerText = "10",
+                showCategory = true, numberMaxLength = 6, widthDp = 400, heightDp = 84
+            )
+            key.contains("PRIVATE (SMALL)") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT_SMALL, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "10",
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("PRIVATE") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "10", showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("PUBLIC (LONG)") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT_LONG, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
+                badgeTop = "KUWAIT", headerText = "90",
+                showCategory = true, numberMaxLength = 6, widthDp = 400, heightDp = 84
+            )
+            key.contains("PUBLIC (SMALL)") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT_SMALL, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "90",
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("MOTORCYCLE") && !key.contains("POLICE") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT_SQUARE, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "دولة الكويت", footerText = "دراجة",
+                showCategory = true, numberMaxLength = 4, widthDp = 160, heightDp = 160
+            )
+            key.contains("POLICE MOTORCYCLE") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT_SQUARE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "شرطة", footerText = "POLICE",
+                showCategory = false, numberMaxLength = 4, widthDp = 160, heightDp = 160
+            )
+            key.contains("POLICE") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "POLICE شرطة",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("PUBLIC") && !key.contains("GOODS") && !key.contains("TRANSPORT") && !key.contains("BUS") && !key.contains("TAXI") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "90",
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("GENERAL FIREFIGHTING") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, ARGB_RED, ARGB_BLACK, ARGB_RED, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "FIRE - الإطفاء العام",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("PUBLIC TRANSPORTATIONS") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "91",
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("PUBLIC BUSES") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "92",
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("PUBLIC TAXIS") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "93",
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("PUBLIC GOODS EXPORTATION") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "95",
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("NATIONAL GUARD") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_GREEN, KUWAIT_YELLOW, KUWAIT_GREEN, KUWAIT_YELLOW,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "الحرس الوطني",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("EMIRI BUREAU") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_BLUE, ARGB_WHITE, KUWAIT_BLUE, ARGB_WHITE,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "دولة الكويت - الديوان الأميري",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("EMIRI GUARD") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_BLUE, ARGB_WHITE, KUWAIT_BLUE, ARGB_WHITE,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "الحرس الأميري",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("EXPORT") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_GREEN, ARGB_BLACK, KUWAIT_GREEN, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "دولة الكويت - تصدير",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("COMMERCIAL") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_PINK, ARGB_BLACK, KUWAIT_PINK, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "دولة الكويت-تجاري",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("TEMPORARY CUSTOMS") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_PURPLE, ARGB_BLACK, KUWAIT_PURPLE, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "دولة الكويت - جمرك مؤقت",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("CONSTRUCTION") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_ORANGE, ARGB_BLACK, KUWAIT_ORANGE, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "دولة الكويت-إنشاءات",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("GOVERNMENT") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_GOV_BLUE, ARGB_BLACK, KUWAIT_GOV_BLUE, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "دولة الكويت - حكومة",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("ARMY") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT, KUWAIT_BEIGE, ARGB_BLACK, KUWAIT_BEIGE, ARGB_BLACK,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "الجيش الكويتي",
+                showCategory = false, numberMaxLength = 5, widthDp = 220, heightDp = 105
+            )
+            key.contains("DIPLOMATE") || key.contains("CORPS DIPLOMATIQUE") -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT_DIPLOMATIC, ARGB_WHITE, KUWAIT_BLUE, ARGB_WHITE, KUWAIT_BLUE,
+                badgeTop = "K", badgeBottom = "KUWAIT", headerText = "هيئة دبلوماسية", footerText = "C.D",
+                showCategory = true, numberMaxLength = 6, widthDp = 220, heightDp = 105
+            )
+            else -> VehiclePlateTemplate(
+                VehiclePlateLayout.KUWAIT,
+                ARGB_WHITE,
+                ARGB_BLACK,
+                ARGB_WHITE,
+                ARGB_BLACK,
+                badgeTop = "K",
+                badgeBottom = "KUWAIT",
+                showCategory = true,
+                numberMaxLength = 5,
+                widthDp = 220,
+                heightDp = 105
+            )
         }
     }
 

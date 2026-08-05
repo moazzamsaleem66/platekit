@@ -69,6 +69,10 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             VehiclePlateLayout.UAE_ABU_DHABI -> drawAbuDhabi(canvas)
             VehiclePlateLayout.UAE_EMIRATE -> drawUaeEmirate(canvas)
             VehiclePlateLayout.KUWAIT -> drawKuwait(canvas)
+            VehiclePlateLayout.KUWAIT_DIPLOMATIC -> drawKuwaitDiplomatic(canvas)
+            VehiclePlateLayout.KUWAIT_SQUARE -> drawKuwaitSquare(canvas)
+            VehiclePlateLayout.KUWAIT_LONG -> drawKuwaitLong(canvas)
+            VehiclePlateLayout.KUWAIT_SMALL -> drawKuwait(canvas) // Same physical design as standard Private, just its own size class
             VehiclePlateLayout.BAHRAIN -> drawBahrain(canvas)
             VehiclePlateLayout.OMAN -> drawOman(canvas)
             VehiclePlateLayout.GENERIC -> drawGeneric(canvas)
@@ -323,13 +327,104 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
     }
 
     private fun drawKuwait(canvas: Canvas) {
-        val r = plate(canvas, Color.WHITE, Color.BLACK)
+        val r = plate(canvas, template.backgroundColor, template.textColor)
         val side = r.width() * .18f
-        line(canvas, r.left + side, r.top, r.left + side, r.bottom, Color.BLACK)
-        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side / 2, r.centerY(), side * .55f, r.height() * .72f, Color.BLACK)
-        text(canvas, shownCategory(), r.left + side + (r.width() - side) * .18f, r.top + r.height() * .20f, r.width() * .15f, r.height() * .20f, Color.BLACK)
-        text(canvas, "دولة الكويت", r.left + side + (r.width() - side) * .68f, r.top + r.height() * .20f, r.width() * .39f, r.height() * .17f, Color.BLACK)
-        text(canvas, shownNumber(), r.left + side + (r.width() - side) / 2, r.top + r.height() * .68f, (r.width() - side) * .88f, r.height() * .55f, Color.BLACK)
+        line(canvas, r.left + side, r.top, r.left + side, r.bottom, template.textColor)
+        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side / 2, r.centerY(), side * .55f, r.height() * .72f, template.textColor)
+        
+        val contentLeft = r.left + side
+        val contentWidth = r.width() - side
+        
+        val header = template.headerText
+        if (header.contains("FIRE") || header.contains("الحرس") || header.contains("دولة الكويت -") || header.contains("دولة الكويت-") || header.contains("POLICE")) {
+            // New styles: Centered header text (one or two lines)
+            text(canvas, header, contentLeft + contentWidth / 2f, r.top + r.height() * .24f, contentWidth * .90f, r.height() * .22f, template.textColor)
+        } else if (header.isNotEmpty() && header.all { it.isDigit() }) {
+            // Public/Transport styles: Code (e.g. 91) + "دولة الكويت"
+            val category = if (categoryValue.isNotBlank()) categoryValue else header
+            text(canvas, category, contentLeft + contentWidth * .18f, r.top + r.height() * .24f, contentWidth * .20f, r.height() * .22f, template.textColor)
+            text(canvas, "دولة الكويت", contentLeft + contentWidth * .68f, r.top + r.height() * .24f, contentWidth * .45f, r.height() * .18f, template.textColor)
+        } else {
+            // Standard Private: Category (e.g. A or 10) + "دولة الكويت"
+            val category = if (categoryValue.isNotBlank()) categoryValue else shownCategory()
+            text(canvas, category, contentLeft + contentWidth * .18f, r.top + r.height() * .24f, contentWidth * .15f, r.height() * .20f, template.textColor)
+            text(canvas, "دولة الكويت", contentLeft + contentWidth * .68f, r.top + r.height() * .24f, contentWidth * .39f, r.height() * .17f, template.textColor)
+        }
+        
+        text(canvas, shownNumber(), contentLeft + contentWidth / 2f, r.top + r.height() * .68f, contentWidth * .88f, r.height() * .55f, template.textColor)
+    }
+
+    private fun drawKuwaitDiplomatic(canvas: Canvas) {
+        val r = plate(canvas, Color.WHITE, template.textColor)
+        val side = r.width() * .18f
+        line(canvas, r.left + side, r.top, r.left + side, r.bottom, template.textColor)
+        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side / 2, r.centerY(), side * .55f, r.height() * .72f, template.textColor)
+
+        val contentLeft = r.left + side
+        val contentWidth = r.width() - side
+        
+        // Header: "هيئة دبلوماسية"
+        text(canvas, template.headerText, contentLeft + contentWidth / 2f, r.top + r.height() * .20f, contentWidth * .80f, r.height() * .20f, template.textColor)
+        
+        // Number
+        text(canvas, shownNumber(), contentLeft + contentWidth / 2f, r.centerY(), contentWidth * .85f, r.height() * .45f, template.textColor)
+        
+        // Red band at bottom
+        val bandH = r.height() * .25f
+        val band = RectF(contentLeft, r.bottom - bandH, r.right, r.bottom)
+        paint.color = Color.RED
+        canvas.drawRect(band, paint)
+        
+        // Footer: "C.D"
+        text(canvas, template.footerText, band.centerX(), band.centerY(), band.width() * .30f, band.height() * .70f, Color.WHITE)
+        
+        outline(canvas, r, template.textColor)
+    }
+
+    private fun drawKuwaitLong(canvas: Canvas) {
+        val r = plate(canvas, template.backgroundColor, template.textColor)
+        
+        // Left Badge Box
+        val badgeW = r.width() * .24f
+        val dividerX = r.left + badgeW
+        line(canvas, dividerX, r.top, dividerX, r.bottom, template.textColor)
+        
+        // Horizontal divider inside badge box
+        val badgeMidY = r.top + r.height() * .40f
+        line(canvas, r.left, badgeMidY, dividerX, badgeMidY, template.textColor)
+        
+        // "دولة الكويت" in top-left cell
+        text(canvas, "دولة الكويت", r.left + badgeW / 2f, r.top + r.height() * .20f, badgeW * .85f, r.height() * .18f, template.textColor)
+        // "KUWAIT" in bottom-left cell
+        text(canvas, "KUWAIT", r.left + badgeW / 2f, r.top + r.height() * .70f, badgeW * .80f, r.height() * .20f, template.textColor)
+        
+        // Number content
+        val contentWidth = r.right - dividerX
+        val contentCenterX = dividerX + contentWidth / 2f
+        
+        // Format: "Category - Number"
+        val category = if (categoryValue.isNotBlank()) categoryValue else template.headerText
+        val displayStr = "$category-${shownNumber()}"
+        text(canvas, displayStr, contentCenterX, r.centerY(), contentWidth * .92f, r.height() * .65f, template.textColor)
+    }
+
+    private fun drawKuwaitSquare(canvas: Canvas) {
+        val r = plate(canvas, template.backgroundColor, template.textColor)
+        val side = r.width() * .22f
+        line(canvas, r.left + side, r.top, r.left + side, r.bottom, template.textColor)
+        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side / 2, r.centerY(), side * .60f, r.height() * .80f, template.textColor)
+
+        val contentLeft = r.left + side
+        val contentWidth = r.width() - side
+        
+        // Header (Arabic "Police")
+        text(canvas, template.headerText, contentLeft + contentWidth / 2f, r.top + r.height() * .22f, contentWidth * .80f, r.height() * .25f, template.textColor)
+        
+        // Number
+        text(canvas, shownNumber(), contentLeft + contentWidth / 2f, r.centerY() + r.height() * .05f, contentWidth * .85f, r.height() * .40f, template.textColor)
+        
+        // Footer (English "POLICE")
+        text(canvas, template.footerText, contentLeft + contentWidth / 2f, r.bottom - r.height() * .18f, contentWidth * .80f, r.height() * .18f, template.textColor)
     }
 
     private fun drawBahrain(canvas: Canvas) {

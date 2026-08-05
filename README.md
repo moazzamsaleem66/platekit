@@ -15,13 +15,29 @@ library made that logic testable on its own, and reusable in any project that ne
 similar "which country's plate is this" input — GCC-region apps in particular, but the
 core is not GCC-specific.
 
-## Preview
+## Supported Plates
+
+The library provides high-fidelity, dimension-accurate renderings for vehicle plates across the GCC region.
 
 ![Supported plate styles](art/preview.svg)
 
-Proportions, colors and layout above are ported directly from `VehiclePlateTemplateView.kt`'s
-draw logic (including each template's real `widthDp`/`heightDp`), not a generic mockup.
-Real device screenshots/GIF from the `sample` app will supplement this once captured.
+### 🇰🇼 Kuwait Styles
+- **Private:** Standard, Long (European), and Small formats.
+- **Transport:** Public, Buses, Taxis, and Goods Exportation.
+- **Specialty:** Police, Government, Army, National Guard, Firefighting.
+- **Exclusive:** Emiri Bureau, Emiri Guard, Diplomatic (with red C.D band).
+- **Motorcycle:** Unique square layout with category numbers.
+
+### 🇶🇦 Qatar Styles
+- **Private:** Classic maroon national strip with serrated edge.
+- **Specialty:** Taxi, Police, ISF, Diplomatic, Government.
+- **Dynamic:** Sub-styles render automatically based on vehicle type strings.
+
+### 🇸🇦 Saudi Arabia, 🇧🇭 Bahrain, 🇴🇲 Oman, 🇦🇪 UAE
+- **Saudi Arabia:** Accurate Palm & Crossed Swords emblem with bilingual grid.
+- **Bahrain:** Accurate serrated flag detail.
+- **Oman:** Wide format with national seal.
+- **UAE:** Specific emirate layouts (Dubai, Abu Dhabi, etc.).
 
 ## Features
 

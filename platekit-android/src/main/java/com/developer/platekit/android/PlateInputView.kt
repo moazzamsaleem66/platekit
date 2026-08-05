@@ -74,6 +74,17 @@ class PlateInputView @JvmOverloads constructor(
             binding.categoryTxt.setText(selectedCategoryCode, false)
             refreshPreview()
         }
+        // Dropdown selection is covered by setOnItemClickListener above, but a value typed
+        // directly (not tapped from the suggestion list) never fired that listener, so the
+        // preview kept showing its fallback default instead of what was actually typed.
+        binding.categoryTxt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: Editable?) {
+                selectedCategoryCode = s?.toString().orEmpty()
+                refreshPreview()
+            }
+        })
         listOf(binding.letter1Txt, binding.letter2Txt, binding.letter3Txt).forEach {
             it.setOnClickListener { _ -> it.showDropDown() }
             it.setOnItemClickListener { _, _, _, _ -> refreshPreview() }
@@ -219,6 +230,7 @@ class PlateInputView @JvmOverloads constructor(
         val catalog = catalog
         if (alternate) {
             binding.alternateFieldsRow.visibility = View.VISIBLE
+            binding.countryContainer.visibility = View.VISIBLE
             binding.platePreviewRow.visibility = View.GONE
             binding.primaryTemplateView.visibility = View.GONE
             binding.alternateTemplateView.visibility = View.VISIBLE
@@ -239,7 +251,7 @@ class PlateInputView @JvmOverloads constructor(
             binding.primaryModeBtn.setBackgroundResource(R.drawable.platekit_bg_toggle_unselected)
             binding.primaryModeTv.setTextColor(ContextCompat.getColor(context, R.color.platekit_text_slate_600))
         } else {
-            binding.alternateFieldsRow.visibility = View.GONE
+            binding.countryContainer.visibility = View.GONE
             binding.uaeStateTextField.visibility = View.GONE
             binding.lettersRow.visibility = View.GONE
             binding.platePreviewRow.visibility = View.GONE
@@ -247,13 +259,24 @@ class PlateInputView @JvmOverloads constructor(
             binding.alternateTemplateView.visibility = View.GONE
             binding.platePreviewCategoryTv.visibility = View.GONE
             selectedCountry = null
-            selectedCategoryCode = ""
+            // Do not reset selectedCategoryCode here so it persists if the country didn't change
+
+            val defaultCountry = catalog?.defaultCountry
+            if (defaultCountry != null) {
+                configureSelectedCountry(defaultCountry)
+                binding.alternateFieldsRow.visibility = 
+                    if (defaultCountry.categoryMode == PlateCategoryInputMode.SINGLE_DROPDOWN) View.VISIBLE else View.GONE
+                // Ensure category container itself is visible inside the row
+                binding.categoryContainer.visibility = 
+                    if (defaultCountry.categoryMode == PlateCategoryInputMode.SINGLE_DROPDOWN) View.VISIBLE else View.GONE
+            } else {
+                binding.alternateFieldsRow.visibility = View.GONE
+            }
 
             // Matches the original fragment exactly: default-mode badge text is always
             // these two fixed strings (not derived from the country code) — a different
             // deployment overrides platekit_badge_letters_default/word_default in its own
             // resources rather than this view deriving text from the country definition.
-            val defaultCountry = catalog?.defaultCountry
             if (defaultCountry != null && defaultCountry.code != "QAT") {
                 binding.plateBadgeLettersTv.text = defaultCountry.code
                 binding.plateBadgeWordTv.text = defaultCountry.displayName
@@ -358,6 +381,7 @@ class PlateInputView @JvmOverloads constructor(
                 countryCode = country.code,
                 vehicleTypeCode = vehicleTypeCode,
                 vehicleTypeName = vehicleTypeName,
+                categoryValue = selectedCategoryCode,
                 plateNumber = rawNumber()
             )
             clampToMaxLength(binding.primaryTemplateView.currentNumberMaxLength)
