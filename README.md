@@ -1,5 +1,10 @@
 # Platekit
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.10-7F52FF.svg?logo=kotlin)](https://kotlinlang.org)
+[![Platform](https://img.shields.io/badge/platform-Android-3DDC84.svg?logo=android)](https://developer.android.com)
+[![minSdk](https://img.shields.io/badge/minSdk-28-orange.svg)](https://developer.android.com)
+
 A configurable, reusable Android vehicle plate-number input: country picker, category/letter
 rules, live visual preview, and validation — built so a default country and a set of
 "other country" options are configuration, not hardcoded logic.
@@ -9,6 +14,19 @@ the plate-country picker had grown into ~40% of one fragment's code. Splitting i
 library made that logic testable on its own, and reusable in any project that needs a
 similar "which country's plate is this" input — GCC-region apps in particular, but the
 core is not GCC-specific.
+
+## Features
+
+- **Configurable, not hardcoded.** Default country, enabled "other countries," and excluded
+  countries are all set via a builder — no fragment/activity code branches on country.
+- **Country-agnostic core.** `PlateCountryDefinition` is an open data class, not a closed
+  enum, so any country's plate rules can be added without touching library internals.
+- **Zero host-resource coupling.** `platekit-android` ships its own colors/drawables/strings;
+  it never reaches into a consuming app's resources, so it drops into any project as-is.
+- **Live visual preview.** Country-specific plate templates (including Qatar's
+  taxi/police/diplomatic/government sub-styles) render as the user types.
+- **Fully unit-tested logic.** `platekit-core` has no Android dependency, so the
+  build/validate rules are tested as plain JVM code, no emulator required.
 
 ## Modules
 
@@ -55,6 +73,12 @@ country not covered here.
 
 Early extraction, not yet published to Maven/JitPack. Package name (`com.developer.platekit`)
 and API are still subject to change before a 1.0 release.
+
+## Contributing
+
+Issues and pull requests are welcome — especially new `PlateCountryDefinition`s for
+countries outside the current GCC set. No formal process yet; open an issue to discuss
+anything non-trivial before sending a PR.
 
 ## License
 
