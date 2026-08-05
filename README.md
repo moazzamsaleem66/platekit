@@ -74,7 +74,7 @@ binding.plateInputView.configure(
     PlateCountryCatalog.builder()
         .defaultCountry(PlateCountries.QATAR)          // primary/simple mode
         .enableCountries(*PlateCountries.gcc.toTypedArray())   // "other country" picker
-        .excludeCountries(PlateCountries.JORDAN)        // optional: drop specific ones
+        .excludeCountries(PlateCountries.JORDAN, PlateCountries.EGYPT) // optional: exclude multiple
         .unlistedCountryPolicy(UnlistedCountryPolicy.GENERIC_FALLBACK)
         .build()
 )
