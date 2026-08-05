@@ -330,7 +330,9 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
         val r = plate(canvas, template.backgroundColor, template.textColor)
         val side = r.width() * .18f
         line(canvas, r.left + side, r.top, r.left + side, r.bottom, template.textColor)
-        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side / 2, r.centerY(), side * .55f, r.height() * .72f, template.textColor)
+        
+        // Vertical "KUWAIT" with better padding to avoid touching lines
+        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side * 0.46f, r.centerY(), side * 0.40f, r.height() * .72f, template.textColor)
         
         val contentLeft = r.left + side
         val contentWidth = r.width() - side
@@ -412,7 +414,9 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
         val r = plate(canvas, template.backgroundColor, template.textColor)
         val side = r.width() * .22f
         line(canvas, r.left + side, r.top, r.left + side, r.bottom, template.textColor)
-        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side / 2, r.centerY(), side * .60f, r.height() * .80f, template.textColor)
+        
+        // Vertical "KUWAIT" with better padding
+        text(canvas, "K\nU\nW\nA\nI\nT", r.left + side * 0.46f, r.centerY(), side * 0.42f, r.height() * .80f, template.textColor)
 
         val contentLeft = r.left + side
         val contentWidth = r.width() - side
