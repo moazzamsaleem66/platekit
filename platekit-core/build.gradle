@@ -1,0 +1,20 @@
+// platekit-core: pure Kotlin/JVM module, deliberately free of any Android dependency.
+// Holds the country-agnostic vehicle-plate domain logic (definitions, catalog,
+// number building/validation, visual template resolution) so it can be unit tested
+// without an emulator and reused outside Android if ever needed.
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+test {
+    useJUnit()
+}

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Internal layout for PlateInputView. Inflated with attachToRoot=true onto the widget
+  itself (a vertical LinearLayout, orientation set in Kotlin), so this is a <merge>
+  rather than its own root ViewGroup.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/selectCountryLabel"
+        style="@style/Platekit.FieldLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/platekit_select_country_label" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/primaryModeBtn"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/platekit_bg_toggle_selected"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/primaryModeIcon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:contentDescription="@null"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/primaryModeTv"
+                style="@style/Platekit.TextAppearance.MediumBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/platekit_qatar_plate_mode"
+                android:textColor="@color/platekit_accent_royal_blue"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alternateModeBtn"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:background="@drawable/platekit_bg_toggle_unselected"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/alternateModeIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@null"
+                android:scaleType="centerInside"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/alternateModeTv"
+                style="@style/Platekit.TextAppearance.MediumBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/platekit_gcc_plate_mode"
+                android:textColor="@color/platekit_text_slate_600"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        style="@style/Platekit.FieldLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/platekit_plate_preview_label" />
+
+    <LinearLayout
+        android:id="@+id/platePreviewRow"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/platekit_bg_field_outline"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/plateBadgeContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/platekit_bg_country_badge"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <TextView
+                android:id="@+id/plateBadgeLettersTv"
+                style="@style/Platekit.TextAppearance.MediumBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/platekit_badge_letters_default"
+                android:textColor="@color/platekit_white"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/plateBadgeWordTv"
+                style="@style/Platekit.TextAppearance.MediumBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@string/platekit_badge_word_default"
+                android:textColor="@color/platekit_white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/platePreviewCategoryTv"
+            style="@style/Platekit.TextAppearance.MediumBold"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:minWidth="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/platekit_text_navy_900"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/platePreviewNumberTv"
+            style="@style/Platekit.TextAppearance.MediumBold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/platekit_text_navy_900"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <com.developer.platekit.android.VehiclePlateTemplateView
+        android:id="@+id/primaryTemplateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" />
+
+    <com.developer.platekit.android.GccPlatePreviewView
+        android:id="@+id/alternateTemplateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/alternateFieldsRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/countryContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Platekit.FieldLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/platekit_plate_country_label" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/countryTextField"
+                style="@style/Platekit.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="5dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/countryTxt"
+                    style="@style/Platekit.TextAppearance.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:inputType="none"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/platekit_text_navy_900"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/categoryContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/categoryLabelTv"
+                style="@style/Platekit.FieldLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/platekit_category_code_label" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/categoryTextField"
+                style="@style/Platekit.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="5dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/categoryTxt"
+                    style="@style/Platekit.TextAppearance.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:inputType="none"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/platekit_text_navy_900"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/uaeStateTextField"
+        style="@style/Platekit.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="6dp"
+        android:hint="@string/platekit_uae_state_hint"
+        android:visibility="gone">
+
+        <AutoCompleteTextView
+            android:id="@+id/uaeStateTxt"
+            style="@style/Platekit.TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:inputType="none"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/platekit_text_navy_900"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/lettersRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <AutoCompleteTextView
+            android:id="@+id/letter1Txt"
+            style="@style/Platekit.FieldInput"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/platekit_bg_field_outline"
+            android:gravity="center"
+            android:hint="@string/platekit_plate_letter_first_hint"
+            android:inputType="none" />
+
+        <AutoCompleteTextView
+            android:id="@+id/letter2Txt"
+            style="@style/Platekit.FieldInput"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/platekit_bg_field_outline"
+            android:gravity="center"
+            android:hint="@string/platekit_plate_letter_second_hint"
+            android:inputType="none" />
+
+        <AutoCompleteTextView
+            android:id="@+id/letter3Txt"
+            style="@style/Platekit.FieldInput"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:background="@drawable/platekit_bg_field_outline"
+            android:gravity="center"
+            android:hint="@string/platekit_plate_letter_third_hint"
+            android:inputType="none" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/Platekit.FieldLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/platekit_plate_number_label" />
+
+    <FrameLayout
+        android:id="@+id/vehicleNumberTextField"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/platekit_bg_field_outline">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/vehicleNumberTxt"
+            style="@style/Platekit.TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:includeFontPadding="true"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingStart="12dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="0dp"
+            android:maxLength="9"
+            android:singleLine="true"
+            android:textColor="@color/platekit_text_navy_900"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+</merge>

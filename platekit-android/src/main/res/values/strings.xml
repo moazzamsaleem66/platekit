@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Default (English) labels and validation messages for PlateInputView. Text matches
+  the original fragment implementation exactly. A host app can override any of these
+  by defining a string with the same name in its own res/values.
+-->
+<resources>
+    <string name="platekit_select_country_label">Select Country</string>
+    <string name="platekit_qatar_plate_mode">Qatar Plate</string>
+    <string name="platekit_gcc_plate_mode">GCC Plate</string>
+    <string name="platekit_plate_preview_label">Vehicle Plate Preview</string>
+    <string name="platekit_badge_letters_default">QATAR</string>
+    <string name="platekit_badge_word_default">قطر</string>
+    <string name="platekit_plate_country_label">Plate Country</string>
+    <string name="platekit_category_code_label">Category Code</string>
+    <string name="platekit_category_code_label_kuwait">Category Code (1–99)</string>
+    <string name="platekit_category_code_label_jordan">Category Code (100–999)</string>
+    <string name="platekit_uae_state_hint">UAE State / Emirate</string>
+    <string name="platekit_plate_letter_first_hint">First</string>
+    <string name="platekit_plate_letter_second_hint">Second</string>
+    <string name="platekit_plate_letter_third_hint">Third</string>
+    <string name="platekit_plate_number_label">Plate Number</string>
+
+    <!-- Validation messages: same wording the original fragment always showed. -->
+    <string name="platekit_error_select_country">Please select plate country</string>
+    <string name="platekit_error_number_invalid">Enter a valid plate number (maximum %1$d digits)</string>
+    <string name="platekit_error_category_not_selected">Please select category code</string>
+    <string name="platekit_error_letters_two">Please select both plate letters</string>
+    <string name="platekit_error_letters_three">Please select all three plate letters</string>
+    <string name="platekit_error_region_not_selected">Please select UAE emirate</string>
+</resources>

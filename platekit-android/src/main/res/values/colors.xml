@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Self-contained default palette for platekit-android widgets. Values are copied from
+  the host app's current design system (colors.xml) so the widget looks unchanged in
+  this project; a different consuming app gets these sane defaults out of the box and
+  can restyle via its own theme/attrs without platekit needing to see its resources.
+-->
+<resources>
+    <color name="platekit_white">#FFFFFFFF</color>
+    <color name="platekit_surface_card">#FFFFFFFF</color>
+    <color name="platekit_input_border">#E1E5F0</color>
+    <color name="platekit_text_navy_900">#0A0F3D</color>
+    <color name="platekit_text_slate_600">#5B6690</color>
+    <color name="platekit_text_hint_grey">#94A0C2</color>
+    <color name="platekit_accent_royal_blue">#001AAF</color>
+    <color name="platekit_qatar_plate_maroon">#8A1538</color>
+</resources>
