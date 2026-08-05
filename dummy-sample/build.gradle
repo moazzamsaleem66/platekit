@@ -1,20 +1,20 @@
-// platekit-android: the Android-facing half of platekit. Depends on platekit-core for
-// all the country/validation logic; owns only Views + self-contained resources (colors,
-// drawables, strings) so it never has to reference the host app's resources — a library
-// module can't see the resources of the app that depends on it.
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    namespace 'com.developer.platekit.android'
+    namespace 'com.example.platesample.dummy'
     compileSdk 34
 
     defaultConfig {
+        applicationId "com.example.platesample.dummy"
         minSdk 28
         targetSdk 33
-        consumerProguardFiles "consumer-rules.pro"
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
@@ -33,9 +33,9 @@ android {
 
 dependencies {
     implementation project(':platekit-core')
+    implementation project(':platekit-android')
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
-
-    testImplementation 'junit:junit:4.13.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }

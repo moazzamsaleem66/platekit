@@ -53,6 +53,8 @@ class PlateInputView @JvmOverloads constructor(
     private var vehicleTypeCode: String = ""
     private var vehicleTypeName: String = ""
 
+    private var onCountryChangeListener: ((PlateCountryDefinition?) -> Unit)? = null
+
     init {
         orientation = VERTICAL
         binding.primaryModeBtn.setOnClickListener { setMode(alternate = false) }
@@ -94,6 +96,7 @@ class PlateInputView @JvmOverloads constructor(
             binding.plateBadgeLettersTv.text = country.code
             binding.plateBadgeWordTv.text = country.displayName
             configureSelectedCountry(country)
+            onCountryChangeListener?.invoke(country)
         }
         setupDropdown(binding.uaeStateTxt, com.developer.platekit.core.PlateCountries.uaeStates)
         binding.uaeStateTxt.setOnItemClickListener { parent, _, position, _ ->
@@ -109,8 +112,17 @@ class PlateInputView @JvmOverloads constructor(
             refreshPreview()
         }
 
-        binding.primaryModeTv.text = context.getString(com.developer.platekit.android.R.string.platekit_qatar_plate_mode)
-        setMode(alternate = false)
+        binding.primaryModeTv.text = context.getString(
+            com.developer.platekit.android.R.string.platekit_primary_plate_mode_format,
+            catalog.defaultCountry.displayName
+        )
+        val isQatar = catalog.defaultCountry.code == "QAT"
+        setMode(alternate = !isQatar)
+        onCountryChangeListener?.invoke(if (isQatar) catalog.defaultCountry else selectedCountry)
+    }
+
+    fun setOnCountryChangeListener(listener: (PlateCountryDefinition?) -> Unit) {
+        this.onCountryChangeListener = listener
     }
 
     /** Optional: shows a small icon inside each toggle button, using the host app's own
@@ -220,6 +232,7 @@ class PlateInputView @JvmOverloads constructor(
             binding.plateBadgeWordTv.text = defaultAlternate?.displayName.orEmpty()
             binding.platePreviewCategoryTv.text = ""
             defaultAlternate?.let(::configureSelectedCountry)
+            onCountryChangeListener?.invoke(defaultAlternate)
 
             binding.alternateModeBtn.setBackgroundResource(R.drawable.platekit_bg_toggle_selected)
             binding.alternateModeTv.setTextColor(ContextCompat.getColor(context, R.color.platekit_accent_royal_blue))
@@ -240,14 +253,21 @@ class PlateInputView @JvmOverloads constructor(
             // these two fixed strings (not derived from the country code) — a different
             // deployment overrides platekit_badge_letters_default/word_default in its own
             // resources rather than this view deriving text from the country definition.
-            binding.plateBadgeLettersTv.text = context.getString(com.developer.platekit.android.R.string.platekit_badge_letters_default)
-            binding.plateBadgeWordTv.text = context.getString(com.developer.platekit.android.R.string.platekit_badge_word_default)
+            val defaultCountry = catalog?.defaultCountry
+            if (defaultCountry != null && defaultCountry.code != "QAT") {
+                binding.plateBadgeLettersTv.text = defaultCountry.code
+                binding.plateBadgeWordTv.text = defaultCountry.displayName
+            } else {
+                binding.plateBadgeLettersTv.text = context.getString(com.developer.platekit.android.R.string.platekit_badge_letters_default)
+                binding.plateBadgeWordTv.text = context.getString(com.developer.platekit.android.R.string.platekit_badge_word_default)
+            }
             binding.vehicleNumberTxt.filters = arrayOf(InputFilter.LengthFilter(6))
 
             binding.primaryModeBtn.setBackgroundResource(R.drawable.platekit_bg_toggle_selected)
             binding.primaryModeTv.setTextColor(ContextCompat.getColor(context, R.color.platekit_accent_royal_blue))
             binding.alternateModeBtn.setBackgroundResource(R.drawable.platekit_bg_toggle_unselected)
             binding.alternateModeTv.setTextColor(ContextCompat.getColor(context, R.color.platekit_text_slate_600))
+            onCountryChangeListener?.invoke(catalog?.defaultCountry)
             refreshPreview()
         }
     }

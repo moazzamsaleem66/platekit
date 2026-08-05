@@ -16,3 +16,4 @@ rootProject.name = "platekit"
 include ':platekit-core'
 include ':platekit-android'
 include ':sample'
+include ':dummy-sample'

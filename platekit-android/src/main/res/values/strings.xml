@@ -7,6 +7,7 @@
 <resources>
     <string name="platekit_select_country_label">Select Country</string>
     <string name="platekit_qatar_plate_mode">Qatar Plate</string>
+    <string name="platekit_primary_plate_mode_format">%1$s Plate</string>
     <string name="platekit_gcc_plate_mode">GCC Plate</string>
     <string name="platekit_plate_preview_label">Vehicle Plate Preview</string>
     <string name="platekit_badge_letters_default">QATAR</string>

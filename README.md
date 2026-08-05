@@ -33,6 +33,8 @@ Real device screenshots/GIF from the `sample` app will supplement this once capt
   it never reaches into a consuming app's resources, so it drops into any project as-is.
 - **Live visual preview.** Country-specific plate templates (including Qatar's
   taxi/police/diplomatic/government sub-styles) render as the user types.
+- **Dynamic UI hooks.** Use `setOnCountryChangeListener` to adapt your host app's UI (like
+  showing/hiding extra vehicle-type options) as the user switches between countries.
 - **Fully unit-tested logic.** `platekit-core` has no Android dependency, so the
   build/validate rules are tested as plain JVM code, no emulator required.
 
@@ -46,7 +48,9 @@ Real device screenshots/GIF from the `sample` app will supplement this once capt
   preview, plate-number field) plus the supporting `VehiclePlateTemplateView`/
   `GccPlatePreviewView` rendering views. Ships its own colors/drawables/strings so it never
   depends on a host app's resources.
-- **`sample`** — a minimal standalone demo Activity.
+- **`sample`** — a minimal standalone demo Activity (Qatar default).
+- **`dummy-sample`** — a second demo app showing how to default to Kuwait and handle dynamic
+  UI changes (`com.example.platesample.dummy`).
 
 ## Quick start
 
@@ -76,6 +80,11 @@ one-line change to `defaultCountry(...)` — no code elsewhere needs to change.
 Bahrain, Saudi Arabia, Kuwait, UAE, Qatar, Oman, Egypt, Jordan (`PlateCountries.gcc`).
 `PlateCountryDefinition` is an open data class, not a closed enum — add your own for any
 country not covered here.
+
+## Build Requirements
+
+- **JDK 1.8+** (Configured with `jvmTarget = "1.8"` for maximum compatibility across environments).
+- **Android SDK 34** (Compile SDK).
 
 ## Status
 

@@ -268,15 +268,29 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
     private fun drawSaudiEmblem(canvas: Canvas, cx: Float, cy: Float, width: Float) {
         paint.color = Color.BLACK
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = dpF(1.1f)
-        val palmTop = cy - width * .16f
-        val palmBottom = cy + width * .12f
+        paint.strokeWidth = dpF(1.2f)
+        
+        // Palm tree
+        val palmTop = cy - width * .18f
+        val palmBottom = cy + width * .10f
         canvas.drawLine(cx, palmTop, cx, palmBottom, paint)
-        listOf(-.25f, -.13f, .13f, .25f).forEach { offset ->
-            canvas.drawLine(cx, palmTop, cx + width * offset, cy - width * .02f, paint)
+        
+        // Fronds
+        val path = Path()
+        listOf(-.28f, -.15f, .15f, .28f).forEach { offset ->
+            path.moveTo(cx, palmTop + width * .02f)
+            path.quadTo(cx + width * offset * 0.5f, palmTop - width * .05f, cx + width * offset, cy - width * .02f)
         }
-        canvas.drawLine(cx - width * .27f, cy + width * .16f, cx + width * .25f, cy + width * .29f, paint)
-        canvas.drawLine(cx + width * .27f, cy + width * .16f, cx - width * .25f, cy + width * .29f, paint)
+        canvas.drawPath(path, paint)
+        
+        // Crossed Swords
+        val swordY = cy + width * .18f
+        val swordWidth = width * .28f
+        // Sword 1 (falling left)
+        canvas.drawLine(cx - swordWidth, swordY - width * .05f, cx + swordWidth, swordY + width * .12f, paint)
+        // Sword 2 (falling right)
+        canvas.drawLine(cx + swordWidth, swordY - width * .05f, cx - swordWidth, swordY + width * .12f, paint)
+        
         paint.style = Paint.Style.FILL
     }
 
@@ -321,9 +335,46 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
     private fun drawBahrain(canvas: Canvas) {
         val blue = template.textColor
         val r = plate(canvas, Color.WHITE, blue)
+        
+        // Labels
         text(canvas, "BAHRAIN", r.left + r.width() * .20f, r.top + r.height() * .20f, r.width() * .32f, r.height() * .19f, blue)
-        fill(canvas, RectF(r.left + r.width() * .40f, r.top + r.height() * .08f, r.left + r.width() * .54f, r.top + r.height() * .28f), Color.RED)
         text(canvas, "البحرين", r.left + r.width() * .76f, r.top + r.height() * .20f, r.width() * .34f, r.height() * .18f, blue)
+        
+        // Flag in the middle
+        val flagW = r.width() * .13f
+        val flagH = r.height() * .18f
+        val flagL = r.centerX() - flagW / 2f
+        val flagT = r.top + r.height() * .10f
+        val flagR = flagL + flagW
+        val flagB = flagT + flagH
+        
+        // White base
+        paint.color = Color.WHITE
+        canvas.drawRect(flagL, flagT, flagR, flagB, paint)
+        
+        // Red part with serrated edge
+        paint.color = Color.RED
+        val path = Path().apply {
+            val serratedX = flagL + flagW * 0.35f
+            moveTo(flagR, flagT)
+            lineTo(serratedX, flagT)
+            val teeth = 5
+            val step = flagH / teeth
+            for (i in 0 until teeth) {
+                lineTo(serratedX + flagW * 0.15f, flagT + step * i + step / 2f)
+                lineTo(serratedX, flagT + step * (i + 1))
+            }
+            lineTo(flagR, flagB)
+            close()
+        }
+        canvas.drawPath(path, paint)
+        
+        // Flag border
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = dpF(0.5f)
+        paint.color = 0xFFCCCCCC.toInt()
+        canvas.drawRect(flagL, flagT, flagR, flagB, paint)
+        
         text(canvas, shownNumber(), r.centerX(), r.top + r.height() * .67f, r.width() * .88f, r.height() * .57f, blue)
     }
 
