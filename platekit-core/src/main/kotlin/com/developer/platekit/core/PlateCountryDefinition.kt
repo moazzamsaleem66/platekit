@@ -27,5 +27,12 @@ data class PlateCountryDefinition(
     val flagKey: String = code,
     val templateResolver: PlateTemplateResolver = PlateTemplateResolver { region, vehicleTypeCode, vehicleTypeName ->
         VehiclePlateTemplates.resolve(code, region, vehicleTypeCode, vehicleTypeName)
-    }
+    },
+    // Client-side numeric country ID + Arabic name, matching the host app's own country
+    // master list (id/NameEN/NameAR) so a plate result can be reported straight into that
+    // system without a separate code->id lookup on the app side. countryId defaults to -1
+    // (unmapped) rather than null so existing call sites/tests that don't pass it don't
+    // silently become Int? everywhere.
+    val countryId: Int = -1,
+    val nameAr: String = ""
 )

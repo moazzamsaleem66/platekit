@@ -20,35 +20,46 @@ object PlateCountries {
     /** UAE emirates — exposed publicly since UAE is also the one country with regionOptions. */
     val uaeStates = listOf("Abu Dhabi", "Dubai", "Sharjah", "Ajman", "Fujairah", "Ras Al-Khaimah", "Umm Al-Quwain")
 
+    // countryId/nameAr below are the client's own country-master IDs (id/NameEN/NameAR),
+    // not derived from `code` — kept as a literal lookup here so this stays a one-line
+    // diff if the client ever renumbers their master list.
     val QATAR = PlateCountryDefinition(
-        code = "QAT", displayName = "Qatar", categoryMode = PlateCategoryInputMode.NONE
+        code = "QAT", displayName = "Qatar", categoryMode = PlateCategoryInputMode.NONE,
+        countryId = 35, nameAr = "قطر"
     )
     val BAHRAIN = PlateCountryDefinition(
-        code = "BHR", displayName = "Bahrain", categoryMode = PlateCategoryInputMode.NONE
+        code = "BHR", displayName = "Bahrain", categoryMode = PlateCategoryInputMode.NONE,
+        countryId = 7, nameAr = "البحرين"
     )
     val SAUDI_ARABIA = PlateCountryDefinition(
         code = "SAU", displayName = "Saudi Arabia", categoryMode = PlateCategoryInputMode.THREE_LETTERS,
-        categoryOptions = { ksaLetters }
+        categoryOptions = { ksaLetters },
+        countryId = 37, nameAr = "المملكة العربية السعودية"
     )
     val KUWAIT = PlateCountryDefinition(
         code = "KWT", displayName = "Kuwait", categoryMode = PlateCategoryInputMode.SINGLE_DROPDOWN,
-        categoryOptions = { kuwaitCodes }
+        categoryOptions = { kuwaitCodes },
+        countryId = 23, nameAr = "الكويت"
     )
     val UAE = PlateCountryDefinition(
         code = "UAE", displayName = "United Arab Emirates", categoryMode = PlateCategoryInputMode.SINGLE_DROPDOWN,
-        categoryOptions = { uaeCodes }, regionOptions = uaeStates
+        categoryOptions = { uaeCodes }, regionOptions = uaeStates,
+        countryId = 49, nameAr = "الإمارات العربية المتحدة"
     )
     val OMAN = PlateCountryDefinition(
         code = "OMN", displayName = "Oman", categoryMode = PlateCategoryInputMode.TWO_LETTERS,
-        categoryOptions = { omanLetters }
+        categoryOptions = { omanLetters },
+        countryId = 32, nameAr = "عمان"
     )
     val EGYPT = PlateCountryDefinition(
         code = "EGY", displayName = "Egypt", categoryMode = PlateCategoryInputMode.THREE_LETTERS,
-        categoryOptions = { egyptLetters }
+        categoryOptions = { egyptLetters },
+        countryId = 13, nameAr = "مصر"
     )
     val JORDAN = PlateCountryDefinition(
         code = "JOR", displayName = "Jordan", categoryMode = PlateCategoryInputMode.SINGLE_DROPDOWN,
-        categoryOptions = { jordanCodes }
+        categoryOptions = { jordanCodes },
+        countryId = 22, nameAr = "الأردن"
     )
 
     /** All eight countries the app ships with today, in their original display order. */

@@ -23,13 +23,17 @@ import com.developer.platekit.core.PlateValidationResult
 
 /** Result of asking a [PlateInputView] for its current, fully-formatted plate number. */
 sealed class PlateInputResult {
-    // countryCode/countryName are non-null only in alternate (GCC) mode; null in
-    // default/Qatar mode, so a caller storing this alongside a previous result can tell
-    // whether to clear a stale country selection.
+    // countryCode/countryName/countryId/countryNameAr are non-null only in alternate (GCC)
+    // mode; null in default/Qatar mode, so a caller storing this alongside a previous
+    // result can tell whether to clear a stale country selection. countryId/countryNameAr
+    // are the client's own country-master values (see PlateCountryDefinition.countryId /
+    // .nameAr) so the host app can report a plate's country straight into that system.
     data class Valid(
         val plateNumber: String,
         val countryCode: String? = null,
-        val countryName: String? = null
+        val countryName: String? = null,
+        val countryId: Int? = null,
+        val countryNameAr: String? = null
     ) : PlateInputResult()
     data class Invalid(val message: String) : PlateInputResult()
 }
@@ -216,7 +220,13 @@ class PlateInputView @JvmOverloads constructor(
             selectedCategoryCode = selectedCategoryCode,
             selectedLetters = selectedLetters()
         )
-        return PlateInputResult.Valid(built, country?.code, country?.displayName)
+        return PlateInputResult.Valid(
+            plateNumber = built,
+            countryCode = country?.code,
+            countryName = country?.displayName,
+            countryId = country?.countryId,
+            countryNameAr = country?.nameAr
+        )
     }
 
     private fun messageFor(reason: PlateValidationReason, maximumLength: Int): String = when (reason) {
