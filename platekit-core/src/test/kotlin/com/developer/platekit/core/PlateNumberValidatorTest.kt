@@ -76,14 +76,30 @@ class PlateNumberValidatorTest {
     }
 
     @Test
-    fun `two letters country requires exactly two letters`() {
-        val result = PlateNumberValidator.validate(
+    fun `two letters country -- Oman's second letter is optional, but at least one is required`() {
+        val noLetters = PlateNumberValidator.validate(
+            selectedCountry = PlateCountries.OMAN,
+            rawNumber = "1234",
+            maximumLength = 4,
+            selectedLetters = ""
+        )
+        assertEquals(PlateValidationResult.Invalid(PlateValidationReason.LETTERS_INCOMPLETE), noLetters)
+
+        val oneLetter = PlateNumberValidator.validate(
             selectedCountry = PlateCountries.OMAN,
             rawNumber = "1234",
             maximumLength = 4,
             selectedLetters = "A"
         )
-        assertEquals(PlateValidationResult.Invalid(PlateValidationReason.LETTERS_INCOMPLETE), result)
+        assertEquals(PlateValidationResult.Valid, oneLetter)
+
+        val twoLetters = PlateNumberValidator.validate(
+            selectedCountry = PlateCountries.OMAN,
+            rawNumber = "1234",
+            maximumLength = 4,
+            selectedLetters = "AB"
+        )
+        assertEquals(PlateValidationResult.Valid, twoLetters)
     }
 
     @Test
@@ -111,12 +127,20 @@ class PlateNumberValidatorTest {
     }
 
     @Test
-    fun `no-category country (Bahrain) only checks the number`() {
-        val result = PlateNumberValidator.validate(
+    fun `Bahrain requires a category (PRIVATE, DIPLOMAT, FOR HIRE) like any single-dropdown country`() {
+        val missingCategory = PlateNumberValidator.validate(
             selectedCountry = PlateCountries.BAHRAIN,
             rawNumber = "123456",
             maximumLength = 6
         )
-        assertEquals(PlateValidationResult.Valid, result)
+        assertEquals(PlateValidationResult.Invalid(PlateValidationReason.CATEGORY_NOT_SELECTED), missingCategory)
+
+        val withCategory = PlateNumberValidator.validate(
+            selectedCountry = PlateCountries.BAHRAIN,
+            rawNumber = "123456",
+            maximumLength = 6,
+            selectedCategoryCode = "PRIVATE"
+        )
+        assertEquals(PlateValidationResult.Valid, withCategory)
     }
 }

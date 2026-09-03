@@ -86,7 +86,9 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             template.badgeBottom.equals("COMM.", ignoreCase = true) ||
             template.badgeBottom.equals("LIMO.", ignoreCase = true) ||
             template.badgeBottom.equals("TAXI", ignoreCase = true) ||
-            template.badgeBottom.replace('\n', ' ').equals("TEMP. TRANS.", ignoreCase = true)
+            template.badgeBottom.replace('\n', ' ').equals("TEMP. TRANS.", ignoreCase = true) ||
+            template.badgeBottom.replace('\n', ' ').equals("PUB. TRANS.", ignoreCase = true) ||
+            template.badgeBottom.replace('\n', ' ').equals("PRI. TRANS.", ignoreCase = true)
         ) {
             drawQatarBoxedLabel(canvas)
             return
@@ -144,6 +146,17 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
         val dividerX = r.left + labelWidth
         val dividerY = r.centerY()
 
+        // Fill the left label cell with the category color (the red PUB/PRI TRANS panel,
+        // the orange TEMP TRANS panel, etc.) -- this was previously never painted, so the
+        // cell stayed the plate's plain background color. For categories whose badge text
+        // is white (meant to sit on a colored panel, not on white) that made the label
+        // invisible outright rather than just the wrong color.
+        canvas.save()
+        val cellClip = Path().apply { addRoundRect(r, dpF(7f), dpF(7f), Path.Direction.CW) }
+        canvas.clipPath(cellClip)
+        fill(canvas, RectF(r.left, r.top, dividerX, r.bottom), template.badgeColor)
+        canvas.restore()
+
         // Match the physical plate: a full-height centre divider and two bordered label cells.
         line(canvas, dividerX, r.top, dividerX, r.bottom, template.textColor)
         line(canvas, r.left, dividerY, dividerX, dividerY, template.textColor)
@@ -190,11 +203,12 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             template.textColor
         )
 
-        // Retain the same outer rim and keyline used by the other Qatar templates.
+        // Reference plate has a thin trim line in the category color just inside the
+        // black keyline (e.g. red on the PUB/PRI TRANS plate), not a plain grey rim.
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = dpF(4f)
-        paint.color = 0xFF9A9A9A.toInt()
-        canvas.drawRoundRect(r, dpF(7f), dpF(7f), paint)
+        paint.strokeWidth = dpF(3f)
+        paint.color = template.badgeColor
+        canvas.drawRoundRect(RectF(r.left + dpF(3f), r.top + dpF(3f), r.right - dpF(3f), r.bottom - dpF(3f)), dpF(6f), dpF(6f), paint)
         outline(canvas, r, template.textColor)
     }
 
@@ -484,9 +498,39 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
         line(canvas, first, r.top, first, r.bottom, Color.BLACK)
         line(canvas, second, r.top, second, r.bottom, Color.BLACK)
         text(canvas, shownNumber(), r.left + r.width() * .20f, r.centerY(), r.width() * .35f, r.height() * .68f, Color.BLACK)
-        text(canvas, shownCategory(), first + (second - first) * .30f, r.centerY(), (second - first) * .48f, r.height() * .62f, Color.BLACK)
+
+        // Two-letter category shown as Arabic-over-Latin cells, matching the physical
+        // plate. Arabic reads right-to-left while the Latin code beneath it reads
+        // left-to-right, so the pairing is crossed on screen: the LEFT cell's Arabic
+        // letter is the pair of the SECOND Latin letter, and the RIGHT cell's Arabic
+        // letter is the pair of the FIRST -- not a straight top/bottom match per cell.
+        val letters = categoryValue.filter(Char::isLetter).map { it.uppercaseChar().toString() }
+        val cellWidth = (second - first) / 2f
+        val arabicFor = com.developer.platekit.core.PlateCountries.omanLetterArabicByLatin
+        when (letters.size) {
+            // Nothing picked yet -- leave both cells empty rather than drawing the "—"
+            // placeholder here, which used to sit directly on top of the divider dot below.
+            0 -> Unit
+            // Only the (required) first letter picked -- one stacked Arabic/Latin cell,
+            // centered, same as the physical plate shows a single-letter category.
+            1 -> text(
+                canvas, "${arabicFor[letters[0]] ?: "?"}\n${letters[0]}",
+                first + cellWidth, r.centerY(), (second - first) * .48f, r.height() * .64f, Color.BLACK
+            )
+            else -> {
+                text(
+                    canvas, "${arabicFor[letters[1]] ?: "?"}\n${letters[0]}",
+                    first + cellWidth * .5f, r.centerY(), cellWidth * .82f, r.height() * .64f, Color.BLACK
+                )
+                text(
+                    canvas, "${arabicFor[letters[0]] ?: "?"}\n${letters[1]}",
+                    first + cellWidth * 1.5f, r.centerY(), cellWidth * .82f, r.height() * .64f, Color.BLACK
+                )
+            }
+        }
+
         paint.color = 0xFF808080.toInt()
-        canvas.drawCircle(second - (second - first) * .18f, r.centerY(), r.height() * .13f, paint)
+        canvas.drawCircle(first + cellWidth, r.centerY(), r.height() * .07f, paint)
         text(canvas, "عُمان", second + (r.right - second) / 2, r.centerY(), (r.right - second) * .76f, r.height() * .48f, Color.BLACK)
     }
 
@@ -545,7 +589,7 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
     }
 
     private fun shownCategory() = categoryValue.ifBlank { "—" }
-    private fun shownNumber() = plateNumber.ifBlank { "123456" }
+    private fun shownNumber() = plateNumber.ifBlank { "---" }
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()
     private fun dpF(value: Float) = value * resources.displayMetrics.density
 }

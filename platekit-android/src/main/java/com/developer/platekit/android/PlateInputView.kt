@@ -3,6 +3,7 @@ package com.developer.platekit.android
 import android.content.Context
 import android.text.Editable
 import android.text.InputFilter
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -55,6 +56,9 @@ class PlateInputView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private val binding = ViewPlateInputBinding.inflate(LayoutInflater.from(context), this)
+    // Whatever the layout XML declares (currently plain "text") -- captured once, up front,
+    // so digitsOnly countries can be switched back to it instead of a hardcoded guess.
+    private val originalNumberInputType = binding.vehicleNumberTxt.inputType
 
     private var catalog: PlateCountryCatalog? = null
     private var isAlternateMode = false
@@ -96,9 +100,29 @@ class PlateInputView @JvmOverloads constructor(
                 refreshPreview()
             }
         })
-        listOf(binding.letter1Txt, binding.letter2Txt, binding.letter3Txt).forEach {
-            it.setOnClickListener { _ -> it.showDropDown() }
-            it.setOnItemClickListener { _, _, _, _ -> refreshPreview() }
+        listOf(binding.letter1Txt, binding.letter2Txt, binding.letter3Txt).forEach { field ->
+            field.setOnClickListener { field.showDropDown() }
+            field.setOnItemClickListener { parent, _, position, _ ->
+                val picked = parent.getItemAtPosition(position).toString()
+                // "None" is Oman's explicit "leave this letter empty" option -- for every
+                // other country/letter this sentinel never appears in the options list.
+                // Otherwise show exactly what was picked, in whichever single script it
+                // was written in (never combine both scripts together).
+                if (picked == com.developer.platekit.core.PlateCountries.OMAN_NO_LETTER_OPTION) {
+                    field.setText("", false)
+                } else {
+                    field.setText(picked, false)
+                }
+                refreshPreview()
+            }
+            // Manual edits/backspacing (not just picking from the dropdown) must also
+            // refresh the preview so a user clearing a letter by hand sees it take effect --
+            // mirrors binding.categoryTxt's own TextWatcher above.
+            field.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+                override fun afterTextChanged(s: Editable?) = refreshPreview()
+            })
         }
     }
 
@@ -126,11 +150,9 @@ class PlateInputView @JvmOverloads constructor(
             binding.uaeStateTxt.setText(selectedUaeState, false)
             selectedCategoryCode = ""
             binding.categoryTxt.setText("", false)
-            setupDropdown(
-                binding.categoryTxt,
-                if (selectedUaeState.equals("Abu Dhabi", true)) com.developer.platekit.core.PlateCountries.KUWAIT.categoryOptions()
-                else com.developer.platekit.core.PlateCountries.singleLetters
-            )
+            // All emirates share the same UAE code list (verified against car.uic.bh):
+            // A-Z, AA/BB/CC/DD/EE/FF, 1-55 -- Abu Dhabi is not a special case.
+            setupDropdown(binding.categoryTxt, com.developer.platekit.core.PlateCountries.UAE.categoryOptions())
             refreshPreview()
         }
 
@@ -333,19 +355,25 @@ class PlateInputView @JvmOverloads constructor(
             }
             "UAE" -> {
                 binding.categoryLabelTv.text = context.getString(com.developer.platekit.android.R.string.platekit_category_code_label)
-                setupDropdown(
-                    binding.categoryTxt,
-                    if (selectedUaeState.equals("Abu Dhabi", true)) com.developer.platekit.core.PlateCountries.KUWAIT.categoryOptions()
-                    else com.developer.platekit.core.PlateCountries.singleLetters
-                )
+                // Same code list for every emirate, including Abu Dhabi (verified against car.uic.bh).
+                setupDropdown(binding.categoryTxt, com.developer.platekit.core.PlateCountries.UAE.categoryOptions())
                 binding.uaeStateTxt.setText(selectedUaeState, false)
             }
             "JOR" -> {
                 binding.categoryLabelTv.text = context.getString(com.developer.platekit.android.R.string.platekit_category_code_label_jordan)
                 setupDropdown(binding.categoryTxt, country.categoryOptions())
             }
-            else -> if (country.categoryMode == PlateCategoryInputMode.TWO_LETTERS || country.categoryMode == PlateCategoryInputMode.THREE_LETTERS) {
-                configureLetterSelectors(country.categoryOptions(), if (country.categoryMode == PlateCategoryInputMode.THREE_LETTERS) 3 else 2)
+            else -> when (country.categoryMode) {
+                // Bahrain (PRIVATE/DIPLOMAT/FOR HIRE) and Qatar (Q/T/R) land here too --
+                // any SINGLE_DROPDOWN country not special-cased above still needs its
+                // options wired up, which this branch previously skipped entirely.
+                PlateCategoryInputMode.SINGLE_DROPDOWN -> {
+                    binding.categoryLabelTv.text = context.getString(com.developer.platekit.android.R.string.platekit_category_code_label)
+                    setupDropdown(binding.categoryTxt, country.categoryOptions())
+                }
+                PlateCategoryInputMode.TWO_LETTERS, PlateCategoryInputMode.THREE_LETTERS ->
+                    configureLetterSelectors(country.categoryOptions(), if (country.categoryMode == PlateCategoryInputMode.THREE_LETTERS) 3 else 2)
+                PlateCategoryInputMode.NONE -> Unit
             }
         }
         refreshPreview()
@@ -359,11 +387,25 @@ class PlateInputView @JvmOverloads constructor(
 
     private fun selectedLetters(): String {
         val requiredCount = if (selectedCountry?.categoryMode == PlateCategoryInputMode.TWO_LETTERS) 2 else 3
-        return listOf(
+        val raw = listOf(
             binding.letter1Txt.text?.toString().orEmpty(),
             binding.letter2Txt.text?.toString().orEmpty(),
             binding.letter3Txt.text?.toString().orEmpty()
-        ).take(requiredCount).filter(String::isNotBlank).joinToString("")
+        ).take(requiredCount)
+        // Oman's fields may show the paired "B (ب)" display or a bare Arabic letter --
+        // normalize back to the canonical Latin code the backend/validator expect.
+        // Other letter-mode countries (Saudi, Egypt) are untouched.
+        val normalized = if (selectedCountry?.code == "OMN") raw.map(::canonicalOmanLetter) else raw
+        return normalized.filter(String::isNotBlank).joinToString("")
+    }
+
+    /** Normalizes a raw field value (a single Latin letter, a single Arabic letter, or
+     *  blank) to the canonical Latin code the backend/validator expect. Other letter-mode
+     *  countries (Saudi, Egypt) are untouched -- this is only invoked for Oman. */
+    private fun canonicalOmanLetter(value: String): String {
+        val trimmed = value.trim()
+        if (trimmed.length == 1 && trimmed[0].uppercaseChar() in 'A'..'Z') return trimmed.uppercase()
+        return com.developer.platekit.core.PlateCountries.omanLetterLatinByArabic[trimmed] ?: trimmed
     }
 
     private fun setupDropdown(view: AutoCompleteTextView, options: List<String>) {
@@ -391,7 +433,10 @@ class PlateInputView @JvmOverloads constructor(
                 categoryValue = category,
                 plateNumber = rawNumber()
             )
-            clampToMaxLength(binding.alternateTemplateView.currentNumberMaxLength)
+            // Saudi plates are digits-only -- the category letters are entered separately
+            // via the three letter dropdowns, so the raw number field itself should never
+            // accept characters here.
+            clampToMaxLength(binding.alternateTemplateView.currentNumberMaxLength, digitsOnly = country.code == "SAU")
         } else {
             val country = catalog?.defaultCountry ?: return
             binding.primaryTemplateView.render(
@@ -401,16 +446,36 @@ class PlateInputView @JvmOverloads constructor(
                 categoryValue = selectedCategoryCode,
                 plateNumber = rawNumber()
             )
-            clampToMaxLength(binding.primaryTemplateView.currentNumberMaxLength)
+            clampToMaxLength(binding.primaryTemplateView.currentNumberMaxLength, digitsOnly = country.code == "SAU")
         }
     }
 
-    private fun clampToMaxLength(maxLength: Int) {
-        binding.vehicleNumberTxt.filters = arrayOf(InputFilter.LengthFilter(maxLength))
+    private fun clampToMaxLength(maxLength: Int, digitsOnly: Boolean = false) {
+        binding.vehicleNumberTxt.filters = if (digitsOnly) {
+            arrayOf(InputFilter.LengthFilter(maxLength), DIGITS_ONLY_FILTER)
+        } else {
+            arrayOf(InputFilter.LengthFilter(maxLength))
+        }
+        // Swap the soft keyboard itself, not just the filter -- otherwise the field still
+        // pops the full QWERTY layout and only silently swallows letters as they're typed.
+        val desiredInputType = if (digitsOnly) InputType.TYPE_CLASS_NUMBER else originalNumberInputType
+        if (binding.vehicleNumberTxt.inputType != desiredInputType) {
+            binding.vehicleNumberTxt.inputType = desiredInputType
+        }
         val current = binding.vehicleNumberTxt.text?.toString().orEmpty()
-        if (current.length > maxLength) {
-            binding.vehicleNumberTxt.setText(current.take(maxLength))
-            binding.vehicleNumberTxt.setSelection(maxLength)
+        val sanitized = if (digitsOnly) current.filter(Char::isDigit) else current
+        if (sanitized.length > maxLength || sanitized != current) {
+            binding.vehicleNumberTxt.setText(sanitized.take(maxLength))
+            binding.vehicleNumberTxt.setSelection(sanitized.take(maxLength).length)
+        }
+    }
+
+    private companion object {
+        /** Rejects any non-digit character as it's typed/pasted, rather than only
+         *  catching it later at submit-time validation. */
+        val DIGITS_ONLY_FILTER = InputFilter { source, start, end, _, _, _ ->
+            val filtered = source.subSequence(start, end).filter(Char::isDigit)
+            if (filtered.length == end - start) null else filtered
         }
     }
 }

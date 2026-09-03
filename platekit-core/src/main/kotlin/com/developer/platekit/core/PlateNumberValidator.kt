@@ -41,7 +41,9 @@ object PlateNumberValidator {
             PlateCategoryInputMode.SINGLE_DROPDOWN -> if (selectedCategoryCode.isBlank()) {
                 return PlateValidationResult.Invalid(PlateValidationReason.CATEGORY_NOT_SELECTED)
             }
-            PlateCategoryInputMode.TWO_LETTERS -> if (selectedLetters.length != 2) {
+            // Oman is the only TWO_LETTERS country, and its second letter is optional on
+            // the physical plate -- the first letter is required, the second is not.
+            PlateCategoryInputMode.TWO_LETTERS -> if (selectedLetters.length !in 1..2) {
                 return PlateValidationResult.Invalid(PlateValidationReason.LETTERS_INCOMPLETE)
             }
             PlateCategoryInputMode.THREE_LETTERS -> if (selectedLetters.length != 3) {

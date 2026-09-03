@@ -42,12 +42,19 @@ class PlateNumberBuilderTest {
     }
 
     @Test
-    fun `no-category alternate country (Qatar picked inside the picker) returns raw digits`() {
-        val result = PlateNumberBuilder.build(
+    fun `Qatar (Q, T, R letter prefix) prefixes the category when set, drops it when blank`() {
+        val withoutCategory = PlateNumberBuilder.build(
             selectedCountry = PlateCountries.QATAR,
             rawNumber = "998877"
         )
-        assertEquals("998877", result)
+        assertEquals("998877", withoutCategory)
+
+        val withCategory = PlateNumberBuilder.build(
+            selectedCountry = PlateCountries.QATAR,
+            rawNumber = "998877",
+            selectedCategoryCode = "Q"
+        )
+        assertEquals("Q-998877", withCategory)
     }
 
     @Test

@@ -59,10 +59,11 @@ object VehiclePlateTemplates {
     fun resolve(countryCode: String, region: String = "", vehicleTypeCode: String = "", vehicleTypeName: String = ""): VehiclePlateTemplate {
         return when (countryCode.uppercase()) {
             "QAT" -> qatar(vehicleTypeCode, vehicleTypeName)
-            "BHR" -> VehiclePlateTemplate(VehiclePlateLayout.BAHRAIN, textColor = BAHRAIN_BLUE, badgeTextColor = BAHRAIN_BLUE, badgeTop = "BAHRAIN  البحرين", numberMaxLength = 6, widthDp = 230, heightDp = 94)
+            "BHR" -> VehiclePlateTemplate(VehiclePlateLayout.BAHRAIN, textColor = BAHRAIN_BLUE, badgeTextColor = BAHRAIN_BLUE, badgeTop = "BAHRAIN  البحرين", showCategory = true, numberMaxLength = 6, widthDp = 230, heightDp = 94)
             "KWT" -> kuwait(vehicleTypeCode, vehicleTypeName)
-            "OMN" -> VehiclePlateTemplate(VehiclePlateLayout.OMAN, backgroundColor = OMAN_YELLOW, badgeColor = OMAN_YELLOW, badgeTop = "عُمان", badgeBottom = "OMAN", showCategory = true, numberMaxLength = 4, widthDp = 360, heightDp = 78)
+            "OMN" -> VehiclePlateTemplate(VehiclePlateLayout.OMAN, backgroundColor = OMAN_YELLOW, badgeColor = OMAN_YELLOW, badgeTop = "عُمان", badgeBottom = "OMAN", showCategory = true, numberMaxLength = 5, widthDp = 360, heightDp = 78)
             "SAU", "KSA" -> VehiclePlateTemplate(VehiclePlateLayout.SAUDI, badgeTop = "السعودية", badgeBottom = "KSA", showCategory = true, numberMaxLength = 4, widthDp = 260, heightDp = 150)
+            "EGY" -> VehiclePlateTemplate(VehiclePlateLayout.GENERIC, badgeTop = "مصر", badgeBottom = "EGYPT", showCategory = true, numberMaxLength = 4)
             "UAE" -> uae(region)
             else -> VehiclePlateTemplate(VehiclePlateLayout.GENERIC, badgeTop = countryCode.uppercase(), badgeBottom = region, showCategory = true)
         }
@@ -224,9 +225,15 @@ object VehiclePlateTemplates {
             key.contains("COMMERCIAL") || key.contains(" COM") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ORANGE, ARGB_BLACK, ORANGE, ARGB_BLACK, "تجارية", "COMM.")
             key.contains("LIMO") || key.contains("TOURIST") || key.contains("RENT") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, GRAY, ARGB_BLACK, "ليموزين", "LIMO.")
             key.contains("TAXI") || key.contains("TAX") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, GRAY, ARGB_BLACK, GRAY, ARGB_BLACK, "أجرة", "TAXI")
-            key.contains("PUBLIC TRANSPORT") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, DARK_RED, ARGB_WHITE, "نقل عام", "PUB. TRANS.")
+            // Stacked two-line badge (matches the physical plate, same convention as
+            // "ادخال\nمؤقت" / "TEMP.\nTRANS." below). "PUB" catches every variant seen
+            // from host apps so far: "PUB", "PUBLIC", "Public transport", "PUBLIC
+            // TRANSPORT" -- case doesn't matter since `key` is already uppercased above.
+            // Safe as a short substring here because no other Qatar category name
+            // contains "pub".
+            key.contains("PUB") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, DARK_RED, ARGB_WHITE, "نقل\nعام", "PUB.\nTRANS.")
             key.contains("PRIVATE TRANSPORT") ->
-                VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, DARK_RED, ARGB_WHITE, "نقل خاص", "PRI. TRANS.")
+                VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, DARK_RED, ARGB_WHITE, "نقل\nخاص", "PRI.\nTRANS.")
             key.contains("GOVERNMENT") || key.contains("MUNICIPAL") || key.contains("CUSTOMS") || key.contains("CIVIL DEFENCE") || key.contains("IMMIGRATION") || key.contains("WORKSHOP") || key.contains("LOCAL GUARD") || key.contains("MARASIM") || key.contains("CEREMON") || key.contains(" GOV") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK, "حكومي", "GOV.")
             key.contains("DIPLOMATIC") || key.contains("CONSULAR") || key.contains("INT. ORGANIZATION") || key.contains("POLITICAL BODY") || key.contains(" DIP") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR_DIPLOMATIC, ARGB_WHITE, ARGB_RED, ARGB_WHITE, ARGB_RED, "دبلوماسية", "QATAR", footerText = "CD", footerTextColor = ARGB_RED)
             key.contains("TEMPORARY") || key.contains("TEMP") || key.contains("UNDER TRIAL") || key.contains("TRANSFER") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, ORANGE, ARGB_BLACK, "ادخال\nمؤقت", "TEMP.\nTRANS.")

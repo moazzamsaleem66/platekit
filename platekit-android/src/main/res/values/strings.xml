@@ -26,7 +26,7 @@
     <string name="platekit_error_select_country">Please select plate country</string>
     <string name="platekit_error_number_invalid">Enter a valid plate number (maximum %1$d digits)</string>
     <string name="platekit_error_category_not_selected">Please select category code</string>
-    <string name="platekit_error_letters_two">Please select both plate letters</string>
+    <string name="platekit_error_letters_two">Please select at least the first plate letter</string>
     <string name="platekit_error_letters_three">Please select all three plate letters</string>
     <string name="platekit_error_region_not_selected">Please select UAE emirate</string>
 </resources>
