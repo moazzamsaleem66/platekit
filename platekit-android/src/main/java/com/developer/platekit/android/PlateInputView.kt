@@ -433,10 +433,13 @@ class PlateInputView @JvmOverloads constructor(
                 categoryValue = category,
                 plateNumber = rawNumber()
             )
-            // Saudi plates are digits-only -- the category letters are entered separately
-            // via the three letter dropdowns, so the raw number field itself should never
-            // accept characters here.
-            clampToMaxLength(binding.alternateTemplateView.currentNumberMaxLength, digitsOnly = country.code == "SAU")
+            // Every GCC country's raw plate-number field is digits-only -- category
+            // letters/codes are entered separately (dropdowns/letter selectors), and
+            // PlateNumberValidator already rejects non-digit input for every country here.
+            // Restricting only SAU let other countries (e.g. Oman) type letters that would
+            // then fail validation with a confusing "enter max N digits" message instead
+            // of simply never being typeable.
+            clampToMaxLength(binding.alternateTemplateView.currentNumberMaxLength, digitsOnly = true)
         } else {
             val country = catalog?.defaultCountry ?: return
             binding.primaryTemplateView.render(
@@ -446,7 +449,9 @@ class PlateInputView @JvmOverloads constructor(
                 categoryValue = selectedCategoryCode,
                 plateNumber = rawNumber()
             )
-            clampToMaxLength(binding.primaryTemplateView.currentNumberMaxLength, digitsOnly = country.code == "SAU")
+            // Same reasoning as the alternate-mode branch above -- the default/primary
+            // country's plate number is digits-only too, not just Saudi's.
+            clampToMaxLength(binding.primaryTemplateView.currentNumberMaxLength, digitsOnly = true)
         }
     }
 

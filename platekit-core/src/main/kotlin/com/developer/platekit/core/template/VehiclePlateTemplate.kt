@@ -69,13 +69,17 @@ object VehiclePlateTemplates {
         }
     }
 
+    // Kuwait's real serial format caps the plate number at 5 digits (e.g. "12-45678")
+    // regardless of sub-template -- verified against Wikipedia's registration plate
+    // reference. Only numberMaxLength changes below; every color/size/layout choice for
+    // these 16 sub-templates is left exactly as designed.
     private fun kuwait(code: String, name: String): VehiclePlateTemplate {
         val key = "$code $name".uppercase()
         return when {
             key.contains("PRIVATE (LONG)") -> VehiclePlateTemplate(
                 VehiclePlateLayout.KUWAIT_LONG, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK,
                 badgeTop = "KUWAIT", headerText = "10",
-                showCategory = true, numberMaxLength = 6, widthDp = 400, heightDp = 84
+                showCategory = true, numberMaxLength = 5, widthDp = 400, heightDp = 84
             )
             key.contains("PRIVATE (SMALL)") -> VehiclePlateTemplate(
                 VehiclePlateLayout.KUWAIT_SMALL, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK,
@@ -89,7 +93,7 @@ object VehiclePlateTemplates {
             key.contains("PUBLIC (LONG)") -> VehiclePlateTemplate(
                 VehiclePlateLayout.KUWAIT_LONG, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
                 badgeTop = "KUWAIT", headerText = "90",
-                showCategory = true, numberMaxLength = 6, widthDp = 400, heightDp = 84
+                showCategory = true, numberMaxLength = 5, widthDp = 400, heightDp = 84
             )
             key.contains("PUBLIC (SMALL)") -> VehiclePlateTemplate(
                 VehiclePlateLayout.KUWAIT_SMALL, KUWAIT_YELLOW, ARGB_BLACK, KUWAIT_YELLOW, ARGB_BLACK,
@@ -189,7 +193,7 @@ object VehiclePlateTemplates {
             key.contains("DIPLOMATE") || key.contains("CORPS DIPLOMATIQUE") -> VehiclePlateTemplate(
                 VehiclePlateLayout.KUWAIT_DIPLOMATIC, ARGB_WHITE, KUWAIT_BLUE, ARGB_WHITE, KUWAIT_BLUE,
                 badgeTop = "K", badgeBottom = "KUWAIT", headerText = "هيئة دبلوماسية", footerText = "C.D",
-                showCategory = true, numberMaxLength = 6, widthDp = 220, heightDp = 105
+                showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 105
             )
             else -> VehiclePlateTemplate(
                 VehiclePlateLayout.KUWAIT,

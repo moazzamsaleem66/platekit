@@ -252,12 +252,18 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
         line(canvas, r.left, middleY, badgeLeft, middleY, Color.BLACK)
         line(canvas, badgeLeft, r.top, badgeLeft, r.bottom, Color.BLACK)
 
-        val number = plateNumber.filter(Char::isDigit).take(4).ifBlank { "7653" }
-        val letters = categoryValue.filter(Char::isLetter).uppercase().take(3).ifBlank { "TNJ" }
+        // No fake sample digits/letters -- an untouched field shows a dash placeholder in
+        // every cell (matches shownNumber()/shownCategory() everywhere else in this view),
+        // not a plausible-looking plate that could be mistaken for real data.
+        val number = plateNumber.filter(Char::isDigit).take(4).ifBlank { "----" }
+        val letters = categoryValue.filter(Char::isLetter).uppercase().take(3).ifBlank { "---" }
         val arabicNumber = number.map { digit ->
             if (digit in '0'..'9') "٠١٢٣٤٥٦٧٨٩"[digit - '0'] else digit
         }.joinToString("")
-        val arabicLetters = letters.map { letter ->
+        // Arabic reads right-to-left, so its letter row is the reverse of the Latin
+        // row beneath it, not a straight per-position map (verified against a real
+        // KSA plate: Latin R R J <-> Arabic ح ر ر, i.e. reversed(R,R,J) mapped).
+        val arabicLetters = letters.reversed().map { letter ->
             mapOf(
                 'A' to "ا", 'B' to "ب", 'J' to "ح", 'D' to "د", 'R' to "ر",
                 'S' to "س", 'X' to "ص", 'T' to "ط", 'E' to "ع", 'G' to "ق",

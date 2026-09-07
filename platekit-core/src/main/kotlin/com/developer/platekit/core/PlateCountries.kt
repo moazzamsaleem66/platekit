@@ -8,6 +8,11 @@ package com.developer.platekit.core
 object PlateCountries {
     private val kuwaitCodes = (1..99).map(Int::toString)
     private val jordanCodes = (100..999).map(Int::toString)
+    /** 2025 reform: numeric prefixes 1-9 (reserved for government use) were replaced by
+     *  letter codes for official vehicles -- PM (Prime Minister/Ministers), GV (general
+     *  government institutions), CD (diplomatic missions), PR/SN (Parliament / House of
+     *  Representatives). Offered alongside the regular 100-999 private codes. */
+    private val jordanGovernmentCodes = listOf("PM", "GV", "CD", "PR", "SN")
     /** Plain A-Z, exposed publicly: also used directly for the UAE category dropdown
      *  outside Abu Dhabi (mirrors the original fragment's conditional logic). */
     val singleLetters = ('A'..'Z').map(Char::toString)
@@ -81,7 +86,7 @@ object PlateCountries {
     )
     val JORDAN = PlateCountryDefinition(
         code = "JOR", displayName = "Jordan", categoryMode = PlateCategoryInputMode.SINGLE_DROPDOWN,
-        categoryOptions = { jordanCodes },
+        categoryOptions = { jordanCodes + jordanGovernmentCodes },
         countryId = 22, nameAr = "الأردن"
     )
 
