@@ -93,4 +93,23 @@ object PlateCountries {
     /** All eight countries the app ships with today, in their original display order. */
     val gcc: List<PlateCountryDefinition> =
         listOf(BAHRAIN, SAUDI_ARABIA, KUWAIT, UAE, QATAR, OMAN, EGYPT, JORDAN)
+
+    /**
+     * Normalizes one raw Oman category-letter value -- a single Latin letter, a single
+     * Arabic letter, the [OMAN_NO_LETTER_OPTION] sentinel, or blank -- to the canonical
+     * Latin code the validator/builder and any backend expect.
+     *
+     * This is the single source of truth for that conversion. [PlateInputView][
+     * com.developer.platekit.android.PlateInputView] calls it, and any host app building
+     * its own custom Oman letter picker (instead of using that widget) should call it too,
+     * right before passing letters into [PlateNumberValidator]/[PlateNumberBuilder] -- that
+     * way a future fix here (e.g. a corrected Arabic mapping) reaches every caller
+     * automatically, with no UI code anywhere needing to change.
+     */
+    fun canonicalOmanLetter(value: String): String {
+        val trimmed = value.trim()
+        if (trimmed == OMAN_NO_LETTER_OPTION) return ""
+        if (trimmed.length == 1 && trimmed[0].uppercaseChar() in 'A'..'Z') return trimmed.uppercase()
+        return omanLetterLatinByArabic[trimmed] ?: trimmed
+    }
 }

@@ -392,20 +392,15 @@ class PlateInputView @JvmOverloads constructor(
             binding.letter2Txt.text?.toString().orEmpty(),
             binding.letter3Txt.text?.toString().orEmpty()
         ).take(requiredCount)
-        // Oman's fields may show the paired "B (ب)" display or a bare Arabic letter --
-        // normalize back to the canonical Latin code the backend/validator expect.
+        // Oman's fields may hold a bare Latin or Arabic letter, or the "None" sentinel --
+        // com.developer.platekit.core.PlateCountries.canonicalOmanLetter() is the one shared
+        // place that conversion lives (also used by any host app building its own Oman
+        // picker), so a future fix there reaches this view with no code change needed here.
         // Other letter-mode countries (Saudi, Egypt) are untouched.
-        val normalized = if (selectedCountry?.code == "OMN") raw.map(::canonicalOmanLetter) else raw
+        val normalized = if (selectedCountry?.code == "OMN")
+            raw.map(com.developer.platekit.core.PlateCountries::canonicalOmanLetter)
+        else raw
         return normalized.filter(String::isNotBlank).joinToString("")
-    }
-
-    /** Normalizes a raw field value (a single Latin letter, a single Arabic letter, or
-     *  blank) to the canonical Latin code the backend/validator expect. Other letter-mode
-     *  countries (Saudi, Egypt) are untouched -- this is only invoked for Oman. */
-    private fun canonicalOmanLetter(value: String): String {
-        val trimmed = value.trim()
-        if (trimmed.length == 1 && trimmed[0].uppercaseChar() in 'A'..'Z') return trimmed.uppercase()
-        return com.developer.platekit.core.PlateCountries.omanLetterLatinByArabic[trimmed] ?: trimmed
     }
 
     private fun setupDropdown(view: AutoCompleteTextView, options: List<String>) {
@@ -457,7 +452,7 @@ class PlateInputView @JvmOverloads constructor(
 
     private fun clampToMaxLength(maxLength: Int, digitsOnly: Boolean = false) {
         binding.vehicleNumberTxt.filters = if (digitsOnly) {
-            arrayOf(InputFilter.LengthFilter(maxLength), DIGITS_ONLY_FILTER)
+            PlateInputFilters.digitsOnly(maxLength)
         } else {
             arrayOf(InputFilter.LengthFilter(maxLength))
         }
@@ -475,12 +470,4 @@ class PlateInputView @JvmOverloads constructor(
         }
     }
 
-    private companion object {
-        /** Rejects any non-digit character as it's typed/pasted, rather than only
-         *  catching it later at submit-time validation. */
-        val DIGITS_ONLY_FILTER = InputFilter { source, start, end, _, _, _ ->
-            val filtered = source.subSequence(start, end).filter(Char::isDigit)
-            if (filtered.length == end - start) null else filtered
-        }
-    }
 }
