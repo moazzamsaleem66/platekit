@@ -68,6 +68,8 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             VehiclePlateLayout.UAE_DUBAI -> drawDubai(canvas)
             VehiclePlateLayout.UAE_ABU_DHABI -> drawAbuDhabi(canvas)
             VehiclePlateLayout.UAE_EMIRATE -> drawUaeEmirate(canvas)
+            VehiclePlateLayout.UAE_AJMAN_RAK -> drawUaeAjmanRak(canvas)
+            VehiclePlateLayout.UAE_FUJAIRAH_SHARJAH -> drawUaeFujairahSharjah(canvas)
             VehiclePlateLayout.KUWAIT -> drawKuwait(canvas)
             VehiclePlateLayout.KUWAIT_DIPLOMATIC -> drawKuwaitDiplomatic(canvas)
             VehiclePlateLayout.KUWAIT_SQUARE -> drawKuwaitSquare(canvas)
@@ -77,6 +79,31 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             VehiclePlateLayout.OMAN -> drawOman(canvas)
             VehiclePlateLayout.GENERIC -> drawGeneric(canvas)
         }
+        if (template.layout.name.startsWith("QATAR")) drawQatarDot(canvas)
+    }
+
+    /** Grey dot upper-right, beside "قطر" -- one shared spot for every Qatar layout, sized
+     *  from the plate height so it scales with the preview. */
+    private fun drawQatarDot(canvas: Canvas) {
+        val inset = dpF(2f)
+        val w = width - 2 * inset
+        val h = height - 2 * inset
+        paint.style = Paint.Style.FILL
+        paint.color = 0xFF9A9A9A.toInt()
+        canvas.drawCircle(inset + w * .94f, inset + h * .24f, h * .07f, paint)
+    }
+
+    /** Width reserved on the right for the category code; 0 when none is set. */
+    private fun qatarCategoryWidth(r: RectF) =
+        if (categoryValue.isBlank() || isQatarPublicTransport()) 0f else r.width() * .14f
+
+    // Public Transport's reference plate shows no category code, so it is never drawn there.
+    private fun isQatarPublicTransport() = template.badgeBottom.replace('\n', ' ').equals("PUB. TRANS.", true)
+
+    /** Category code (e.g. "Q") as its own element at the right, never merged into the number. */
+    private fun drawQatarCategory(canvas: Canvas, r: RectF, left: Float, width: Float) {
+        if (width <= 0f) return
+        text(canvas, categoryValue.uppercase(), left + width * .42f, r.top + r.height() * .68f, width * .70f, r.height() * .45f, template.textColor)
     }
 
     private fun drawQatar(canvas: Canvas) {
@@ -126,10 +153,12 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             text(canvas, template.badgeBottom, r.left + (side - toothDepth) * .50f, r.top + r.height() * .70f, side * .66f, r.height() * .18f, template.badgeTextColor)
         }
         val numberLeft = edgeX - toothDepth * .10f
-        val numberWidth = r.right - numberLeft
+        val catWidth = qatarCategoryWidth(r)
+        val numberWidth = r.right - numberLeft - catWidth
         val numberCenter = numberLeft + numberWidth / 2f
         text(canvas, "قطر", numberCenter, r.top + r.height() * .24f, numberWidth * .48f, r.height() * .25f, template.textColor)
         text(canvas, shownNumber(), numberCenter, r.top + r.height() * .68f, numberWidth * .94f, r.height() * .53f, template.textColor)
+        drawQatarCategory(canvas, r, numberLeft + numberWidth, catWidth)
 
         // Reference plate uses a dark inner keyline with a subtle grey outer rim.
         paint.style = Paint.Style.STROKE
@@ -142,7 +171,7 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
     /** Qatar plate variants with a two-row label use the physical boxed-column layout. */
     private fun drawQatarBoxedLabel(canvas: Canvas) {
         val r = plate(canvas, template.backgroundColor, template.textColor)
-        val labelWidth = r.width() * .34f
+        val labelWidth = r.width() * (if (isQatarPublicTransport()) .28f else .34f)
         val dividerX = r.left + labelWidth
         val dividerY = r.centerY()
 
@@ -182,7 +211,8 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             template.badgeTextColor
         )
 
-        val numberWidth = r.right - dividerX
+        val catWidth = qatarCategoryWidth(r)
+        val numberWidth = r.right - dividerX - catWidth
         val numberCenter = dividerX + numberWidth / 2f
         text(
             canvas,
@@ -202,11 +232,12 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
             r.height() * .53f,
             template.textColor
         )
+        drawQatarCategory(canvas, r, dividerX + numberWidth, catWidth)
 
         // Reference plate has a thin trim line in the category color just inside the
         // black keyline (e.g. red on the PUB/PRI TRANS plate), not a plain grey rim.
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = dpF(3f)
+        paint.strokeWidth = dpF(if (isQatarPublicTransport()) 1.5f else 3f)
         paint.color = template.badgeColor
         canvas.drawRoundRect(RectF(r.left + dpF(3f), r.top + dpF(3f), r.right - dpF(3f), r.bottom - dpF(3f)), dpF(6f), dpF(6f), paint)
         outline(canvas, r, template.textColor)
@@ -215,10 +246,14 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
     private fun drawQatarDiplomatic(canvas: Canvas) {
         val r = plate(canvas, Color.WHITE, Color.RED)
         text(canvas, "قطر", r.left + r.width() * .18f, r.top + r.height() * .22f, r.width() * .22f, r.height() * .18f, Color.RED)
-        text(canvas, "هيئة دبلوماسية", r.left + r.width() * .78f, r.top + r.height() * .22f, r.width() * .36f, r.height() * .15f, Color.RED)
+        text(canvas, "هيئة دبلوماسية", r.left + r.width() * .74f, r.top + r.height() * .22f, r.width() * .34f, r.height() * .15f, Color.RED)
         text(canvas, shownNumber(), r.centerX(), r.top + r.height() * .55f, r.width() * .54f, r.height() * .42f, Color.RED)
         text(canvas, "QATAR", r.left + r.width() * .18f, r.top + r.height() * .84f, r.width() * .24f, r.height() * .15f, Color.RED)
         text(canvas, "CD", r.left + r.width() * .84f, r.top + r.height() * .84f, r.width() * .14f, r.height() * .18f, Color.RED)
+        // Small grey circle, bottom centre, between "QATAR" and "CD".
+        paint.style = Paint.Style.FILL
+        paint.color = 0xFF9A9A9A.toInt()
+        canvas.drawCircle(r.centerX(), r.top + r.height() * .84f, r.height() * .05f, paint)
     }
 
     private fun drawQatarPolice(canvas: Canvas) {
@@ -346,6 +381,30 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
         text(canvas, "U.A.E", r.left + r.width() * .80f, r.top + r.height() * .81f, r.width() * .27f, r.height() * .18f, Color.BLACK)
     }
 
+    /** Fujairah / Sharjah: big number on top, no divider; bottom row = U.A.E | category | Arabic emirate. */
+    private fun drawUaeFujairahSharjah(canvas: Canvas) {
+        val r = plate(canvas, Color.WHITE, Color.BLACK)
+        text(canvas, shownNumber(), r.centerX(), r.top + r.height() * .36f, r.width() * .84f, r.height() * .56f, Color.BLACK)
+        val rowY = r.top + r.height() * .81f
+        text(canvas, "U.A.E", r.left + r.width() * .20f, rowY, r.width() * .27f, r.height() * .18f, Color.BLACK)
+        text(canvas, shownCategory(), r.centerX(), rowY, r.width() * .14f, r.height() * .24f, Color.BLACK)
+        text(canvas, template.badgeTop, r.left + r.width() * .80f, rowY, r.width() * .30f, r.height() * .20f, Color.BLACK)
+    }
+
+    /** Ajman / RAK: big number on top, no divider; bottom row = emirate | category | UAE. */
+    private fun drawUaeAjmanRak(canvas: Canvas) {
+        val r = plate(canvas, Color.WHITE, Color.BLACK)
+        text(canvas, shownNumber(), r.centerX(), r.top + r.height() * .36f, r.width() * .84f, r.height() * .56f, Color.BLACK)
+        val leftX = r.left + r.width() * .20f
+        val rightX = r.left + r.width() * .80f
+        val colW = r.width() * .30f
+        text(canvas, template.badgeTop, leftX, r.top + r.height() * .72f, colW, r.height() * .17f, Color.BLACK)
+        text(canvas, template.badgeBottom, leftX, r.top + r.height() * .89f, colW * .8f, r.height() * .12f, Color.BLACK)
+        text(canvas, shownCategory(), r.centerX(), r.top + r.height() * .80f, r.width() * .20f, r.height() * .28f, Color.BLACK)
+        text(canvas, "الإمارات", rightX, r.top + r.height() * .72f, colW, r.height() * .17f, Color.BLACK)
+        text(canvas, "UAE", rightX, r.top + r.height() * .89f, colW * .6f, r.height() * .12f, Color.BLACK)
+    }
+
     private fun drawKuwait(canvas: Canvas) {
         val r = plate(canvas, template.backgroundColor, template.textColor)
         val side = r.width() * .18f
@@ -454,7 +513,18 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
     private fun drawBahrain(canvas: Canvas) {
         val blue = template.textColor
         val r = plate(canvas, Color.WHITE, blue)
-        
+
+        // Grey strip: ~4.5% of plate width, clipped to the rounded border's inner edge
+        // so it sits inside the blue outline and follows its curved corners.
+        val half = dpF(1f)
+        val stripW = r.width() * .045f
+        val stripLeft = r.right - half - stripW
+        val inner = RectF(r.left + half, r.top + half, r.right - half, r.bottom - half)
+        canvas.save()
+        canvas.clipPath(Path().apply { addRoundRect(inner, dpF(6f), dpF(6f), Path.Direction.CW) })
+        fill(canvas, RectF(stripLeft, inner.top, inner.right, inner.bottom), 0xFFB0B0B0.toInt())
+        canvas.restore()
+
         // Labels
         text(canvas, "BAHRAIN", r.left + r.width() * .20f, r.top + r.height() * .20f, r.width() * .32f, r.height() * .19f, blue)
         text(canvas, "البحرين", r.left + r.width() * .76f, r.top + r.height() * .20f, r.width() * .34f, r.height() * .18f, blue)
@@ -494,7 +564,9 @@ open class VehiclePlateTemplateView @JvmOverloads constructor(
         paint.color = 0xFFCCCCCC.toInt()
         canvas.drawRect(flagL, flagT, flagR, flagB, paint)
         
-        text(canvas, shownNumber(), r.centerX(), r.top + r.height() * .67f, r.width() * .88f, r.height() * .57f, blue)
+        // Number is laid out in the area left of the strip so it never touches it.
+        val areaW = stripLeft - r.left
+        text(canvas, shownNumber(), r.left + areaW / 2, r.top + r.height() * .67f, areaW * .92f, r.height() * .57f, blue)
     }
 
     private fun drawOman(canvas: Canvas) {

@@ -8,7 +8,7 @@ private const val ARGB_BLACK = 0xFF000000.toInt()
 private const val ARGB_TRANSPARENT = 0x00000000
 private const val ARGB_RED = 0xFFFF0000.toInt()
 
-enum class VehiclePlateLayout { QATAR, QATAR_DIPLOMATIC, QATAR_POLICE, QATAR_ISF, SAUDI, UAE_DUBAI, UAE_ABU_DHABI, UAE_EMIRATE, KUWAIT, KUWAIT_DIPLOMATIC, KUWAIT_SQUARE, KUWAIT_LONG, KUWAIT_SMALL, BAHRAIN, OMAN, GENERIC }
+enum class VehiclePlateLayout { QATAR, QATAR_DIPLOMATIC, QATAR_POLICE, QATAR_ISF, SAUDI, UAE_DUBAI, UAE_ABU_DHABI, UAE_EMIRATE, UAE_AJMAN_RAK, UAE_FUJAIRAH_SHARJAH, KUWAIT, KUWAIT_DIPLOMATIC, KUWAIT_SQUARE, KUWAIT_LONG, KUWAIT_SMALL, BAHRAIN, OMAN, GENERIC }
 
 data class VehiclePlateTemplate(
     val layout: VehiclePlateLayout = VehiclePlateLayout.GENERIC,
@@ -37,9 +37,12 @@ data class VehiclePlateTemplate(
  */
 object VehiclePlateTemplates {
     private const val MAROON = 0xFF750014.toInt()
-    private const val QATAR_PLATE_FACE = 0xFFE7E8E6.toInt()
+    private const val QATAR_PLATE_FACE = 0xFFFFFFFF.toInt() // solid white; was a grey tint
     private const val ORANGE = 0xFFF28C00.toInt()
     private const val GRAY = 0xFFB8BCC5.toInt()
+    // Dark red, but lighter than the #801B2B panel so the text stays visible on it.
+    private const val PUB_TRANS_TEXT_RED = 0xFFC00000.toInt()
+    private const val PUB_TRANS_MAROON = 0xFF801B2B.toInt()
     private const val DARK_RED = 0xFF8B1E2D.toInt()
     private const val POLICE_BLUE = 0xFF168BC4.toInt()
     private const val ISF_YELLOW = 0xFFE7AA18.toInt()
@@ -235,7 +238,7 @@ object VehiclePlateTemplates {
             // TRANSPORT" -- case doesn't matter since `key` is already uppercased above.
             // Safe as a short substring here because no other Qatar category name
             // contains "pub".
-            key.contains("PUB") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, DARK_RED, ARGB_WHITE, "نقل\nعام", "PUB.\nTRANS.")
+            key.contains("PUB") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, PUB_TRANS_MAROON, PUB_TRANS_TEXT_RED, "نقل\nعام", "PUB.\nTRANS.")
             key.contains("PRIVATE TRANSPORT") ->
                 VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, DARK_RED, ARGB_WHITE, "نقل\nخاص", "PRI.\nTRANS.")
             key.contains("GOVERNMENT") || key.contains("MUNICIPAL") || key.contains("CUSTOMS") || key.contains("CIVIL DEFENCE") || key.contains("IMMIGRATION") || key.contains("WORKSHOP") || key.contains("LOCAL GUARD") || key.contains("MARASIM") || key.contains("CEREMON") || key.contains(" GOV") -> VehiclePlateTemplate(VehiclePlateLayout.QATAR, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK, "حكومي", "GOV.")
@@ -259,6 +262,19 @@ object VehiclePlateTemplates {
 
     private fun uae(region: String): VehiclePlateTemplate {
         val emirate = region.ifBlank { "Dubai" }
+        // Ajman / Ras Al Khaimah share one layout: Arabic name over English abbreviation, bottom-left.
+        val (ar, abbr) = when (emirate.filter(Char::isLetter).lowercase()) {
+            "ajman" -> "عجمان" to "AJMAN"
+            "rasalkhaimah", "rak" -> "رأس الخيمة" to "RAK"
+            else -> null to null
+        }
+        val fs = when (emirate.filter(Char::isLetter).lowercase()) { "fujairah" -> "الفجيرة"; "sharjah" -> "الشارقة"; else -> null }
+        if (fs != null) {
+            return VehiclePlateTemplate(VehiclePlateLayout.UAE_FUJAIRAH_SHARJAH, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK, fs, "U.A.E", showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 108)
+        }
+        if (ar != null && abbr != null) {
+            return VehiclePlateTemplate(VehiclePlateLayout.UAE_AJMAN_RAK, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK, ar, abbr, showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 108)
+        }
         return if (emirate.equals("Abu Dhabi", true)) {
             VehiclePlateTemplate(VehiclePlateLayout.UAE_ABU_DHABI, ARGB_WHITE, ARGB_BLACK, ARGB_WHITE, ARGB_BLACK, "A.D", "U.A.E", headerText = "أبوظبي   الإمارات", headerColor = UAE_RED, headerTextColor = ARGB_WHITE, showCategory = true, numberMaxLength = 5, widthDp = 220, heightDp = 108)
         } else {
